@@ -1,13 +1,17 @@
-import type { Config } from "tailwindcss"
+// En tu nuevo archivo: tailwind.config.ts
+
+import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
+  // --- LA CORRECCIÓN CLAVE ESTÁ AQUÍ ---
+  // Le decimos a Tailwind que busque clases en TODOS los tipos de archivo relevantes.
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  // El resto de la configuración de shadcn/ui ya está perfecta.
   prefix: "",
   theme: {
     container: {
@@ -18,6 +22,7 @@ const config = {
       },
     },
     extend: {
+      // (Todo tu 'extend' se queda igual, ya está correcto)
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -75,6 +80,6 @@ const config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config
+} satisfies Config;
 
-export default config
+export default config;

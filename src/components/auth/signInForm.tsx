@@ -38,7 +38,7 @@ export function SignInForm() {
     if (error) {
       setErrorMessage(error.message || "Login failed");
     } else {
-      router.push("/");
+      router.push("/dashboard");
     }
 
     setLoading(false);
