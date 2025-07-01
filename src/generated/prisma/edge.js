@@ -136,7 +136,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\Usuario\\auth-nextjs-supabase\\src\\generated\\prisma",
+      "value": "C:\\Users\\Usuario\\vacunas-fullstack\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -152,7 +152,7 @@ const config = {
     "previewFeatures": [
       "multiSchema"
     ],
-    "sourceFilePath": "C:\\Users\\Usuario\\auth-nextjs-supabase\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\Usuario\\vacunas-fullstack\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -166,6 +166,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {

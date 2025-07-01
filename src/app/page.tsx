@@ -7,6 +7,9 @@ export default function PublicHomePage() {
   // Esta es tu página pública de bienvenida.
   // No necesita lógica de sesión aquí.
   return (
-    <HomePageComponent />
+    <>
+      <HomePageComponent />
+      <Footer />
+    </>
   );
 }
