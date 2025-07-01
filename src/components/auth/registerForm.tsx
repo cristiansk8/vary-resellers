@@ -81,8 +81,9 @@ export default function RegisterForm() {
       if (!res.ok) {
         setError(data.error || "Error en el registro");
       } else {
-        setSuccess("Registro exitoso. Redirigiendo...");
-        setTimeout(() => router.push("/sign-in"), 2000);
+        setSuccess("Registro exitoso. Por favor revisa tu correo electrónico para confirmar tu cuenta.");
+        // Opcional: redirigir después de unos segundos
+        setTimeout(() => router.push("/sign-in"), 4000);
       }
     } catch (err) {
       setError("Error inesperado en el registro");
