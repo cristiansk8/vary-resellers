@@ -13,5 +13,22 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  schemas  = ["public"]  // SOLO esquema público, nada de auth
+  schemas  = ["public"]
+}
+
+model Profile {
+  id          String    @id @db.Uuid
+  email       String?   @unique
+  name        String?   // Para el/los Nombre(s)
+  lastName    String?   // Nuevo campo para Apellido(s)
+  documentId  String?   @unique
+  country     String?   // Nuevo campo para País
+  birthDate   DateTime? // Nuevo campo para Fecha de Nacimiento
+  phone       String?   // Nuevo campo para Teléfono (opcional)
+  role        String    @default("user")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+    // ¡AÑADE ESTA LÍNEA AL FINAL DEL MODELO!
+  @@schema("public")
 }
