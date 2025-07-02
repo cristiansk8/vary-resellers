@@ -134,6 +134,20 @@ exports.Prisma.ProfileScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.VaccineScalarFieldEnum = {
+  id: 'id',
+  vaccineName: 'vaccineName',
+  dose: 'dose',
+  vaccinationDate: 'vaccinationDate',
+  vaccinationPlace: 'vaccinationPlace',
+  healthProfessional: 'healthProfessional',
+  vaccineLot: 'vaccineLot',
+  vaccineProofUrl: 'vaccineProofUrl',
+  profileId: 'profileId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -151,7 +165,8 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
-  Profile: 'Profile'
+  Profile: 'Profile',
+  Vaccine: 'Vaccine'
 };
 
 /**

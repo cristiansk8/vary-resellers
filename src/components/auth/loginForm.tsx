@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
+import Footer from "@/components/footer";
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({
@@ -72,6 +73,9 @@ export default function LoginForm() {
           <div className="mt-4 text-center">
             <span>¿No tienes cuenta? </span>
             <Link href="/sign-up" className="text-blue-600 hover:underline">Regístrate</Link>
+          </div>
+          <div className="mt-2 text-center">
+            <Link href="/forgot-password" className="text-blue-600 hover:underline">¿Olvidaste tu contraseña?</Link>
           </div>
         </CardContent>
       </Card>

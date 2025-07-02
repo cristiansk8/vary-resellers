@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { countries } from "@/lib/countries";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface RegisterFormData {
   firstName: string;
@@ -165,6 +166,10 @@ export default function RegisterForm() {
               {loading ? "Registrando..." : "Registrarse"}
             </Button>
           </form>
+          <div className="mt-4 text-center">
+            <span>¿Ya tienes cuenta? </span>
+            <Link href="/sign-in" className="text-blue-600 hover:underline">Inicia sesión</Link>
+          </div>
         </CardContent>
       </Card>
     </div>

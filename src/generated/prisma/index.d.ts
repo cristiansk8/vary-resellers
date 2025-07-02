@@ -18,6 +18,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  * 
  */
 export type Profile = $Result.DefaultSelection<Prisma.$ProfilePayload>
+/**
+ * Model Vaccine
+ * 
+ */
+export type Vaccine = $Result.DefaultSelection<Prisma.$VaccinePayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -153,6 +158,16 @@ export class PrismaClient<
     * ```
     */
   get profile(): Prisma.ProfileDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.vaccine`: Exposes CRUD operations for the **Vaccine** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Vaccines
+    * const vaccines = await prisma.vaccine.findMany()
+    * ```
+    */
+  get vaccine(): Prisma.VaccineDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -593,7 +608,8 @@ export namespace Prisma {
 
 
   export const ModelName: {
-    Profile: 'Profile'
+    Profile: 'Profile',
+    Vaccine: 'Vaccine'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -612,7 +628,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "profile"
+      modelProps: "profile" | "vaccine"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -687,6 +703,80 @@ export namespace Prisma {
           count: {
             args: Prisma.ProfileCountArgs<ExtArgs>
             result: $Utils.Optional<ProfileCountAggregateOutputType> | number
+          }
+        }
+      }
+      Vaccine: {
+        payload: Prisma.$VaccinePayload<ExtArgs>
+        fields: Prisma.VaccineFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.VaccineFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VaccinePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.VaccineFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VaccinePayload>
+          }
+          findFirst: {
+            args: Prisma.VaccineFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VaccinePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.VaccineFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VaccinePayload>
+          }
+          findMany: {
+            args: Prisma.VaccineFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VaccinePayload>[]
+          }
+          create: {
+            args: Prisma.VaccineCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VaccinePayload>
+          }
+          createMany: {
+            args: Prisma.VaccineCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.VaccineCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VaccinePayload>[]
+          }
+          delete: {
+            args: Prisma.VaccineDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VaccinePayload>
+          }
+          update: {
+            args: Prisma.VaccineUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VaccinePayload>
+          }
+          deleteMany: {
+            args: Prisma.VaccineDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.VaccineUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.VaccineUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VaccinePayload>[]
+          }
+          upsert: {
+            args: Prisma.VaccineUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VaccinePayload>
+          }
+          aggregate: {
+            args: Prisma.VaccineAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateVaccine>
+          }
+          groupBy: {
+            args: Prisma.VaccineGroupByArgs<ExtArgs>
+            result: $Utils.Optional<VaccineGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.VaccineCountArgs<ExtArgs>
+            result: $Utils.Optional<VaccineCountAggregateOutputType> | number
           }
         }
       }
@@ -775,6 +865,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     profile?: ProfileOmit
+    vaccine?: VaccineOmit
   }
 
   /* Types for Logging */
@@ -863,6 +954,36 @@ export namespace Prisma {
    * Count Types
    */
 
+
+  /**
+   * Count Type ProfileCountOutputType
+   */
+
+  export type ProfileCountOutputType = {
+    vaccines: number
+  }
+
+  export type ProfileCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    vaccines?: boolean | ProfileCountOutputTypeCountVaccinesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ProfileCountOutputType without action
+   */
+  export type ProfileCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProfileCountOutputType
+     */
+    select?: ProfileCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ProfileCountOutputType without action
+   */
+  export type ProfileCountOutputTypeCountVaccinesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VaccineWhereInput
+  }
 
 
   /**
@@ -1081,6 +1202,8 @@ export namespace Prisma {
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    vaccines?: boolean | Profile$vaccinesArgs<ExtArgs>
+    _count?: boolean | ProfileCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["profile"]>
 
   export type ProfileSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1126,10 +1249,18 @@ export namespace Prisma {
   }
 
   export type ProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "lastName" | "documentId" | "country" | "birthDate" | "phone" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["profile"]>
+  export type ProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    vaccines?: boolean | Profile$vaccinesArgs<ExtArgs>
+    _count?: boolean | ProfileCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ProfileIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $ProfilePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Profile"
-    objects: {}
+    objects: {
+      vaccines: Prisma.$VaccinePayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       email: string | null
@@ -1536,6 +1667,7 @@ export namespace Prisma {
    */
   export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    vaccines<T extends Profile$vaccinesArgs<ExtArgs> = {}>(args?: Subset<T, Profile$vaccinesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VaccinePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1593,6 +1725,10 @@ export namespace Prisma {
      */
     omit?: ProfileOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
+    /**
      * Filter, which Profile to fetch.
      */
     where: ProfileWhereUniqueInput
@@ -1611,6 +1747,10 @@ export namespace Prisma {
      */
     omit?: ProfileOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
+    /**
      * Filter, which Profile to fetch.
      */
     where: ProfileWhereUniqueInput
@@ -1628,6 +1768,10 @@ export namespace Prisma {
      * Omit specific fields from the Profile
      */
     omit?: ProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
     /**
      * Filter, which Profile to fetch.
      */
@@ -1677,6 +1821,10 @@ export namespace Prisma {
      */
     omit?: ProfileOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
+    /**
      * Filter, which Profile to fetch.
      */
     where?: ProfileWhereInput
@@ -1725,6 +1873,10 @@ export namespace Prisma {
      */
     omit?: ProfileOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
+    /**
      * Filter, which Profiles to fetch.
      */
     where?: ProfileWhereInput
@@ -1767,6 +1919,10 @@ export namespace Prisma {
      * Omit specific fields from the Profile
      */
     omit?: ProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
     /**
      * The data needed to create a Profile.
      */
@@ -1815,6 +1971,10 @@ export namespace Prisma {
      * Omit specific fields from the Profile
      */
     omit?: ProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
     /**
      * The data needed to update a Profile.
      */
@@ -1882,6 +2042,10 @@ export namespace Prisma {
      */
     omit?: ProfileOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
+    /**
      * The filter to search for the Profile to update in case it exists.
      */
     where: ProfileWhereUniqueInput
@@ -1908,6 +2072,10 @@ export namespace Prisma {
      */
     omit?: ProfileOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
+    /**
      * Filter which Profile to delete.
      */
     where: ProfileWhereUniqueInput
@@ -1928,6 +2096,30 @@ export namespace Prisma {
   }
 
   /**
+   * Profile.vaccines
+   */
+  export type Profile$vaccinesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vaccine
+     */
+    select?: VaccineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vaccine
+     */
+    omit?: VaccineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VaccineInclude<ExtArgs> | null
+    where?: VaccineWhereInput
+    orderBy?: VaccineOrderByWithRelationInput | VaccineOrderByWithRelationInput[]
+    cursor?: VaccineWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VaccineScalarFieldEnum | VaccineScalarFieldEnum[]
+  }
+
+  /**
    * Profile without action
    */
   export type ProfileDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1939,6 +2131,1146 @@ export namespace Prisma {
      * Omit specific fields from the Profile
      */
     omit?: ProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Vaccine
+   */
+
+  export type AggregateVaccine = {
+    _count: VaccineCountAggregateOutputType | null
+    _min: VaccineMinAggregateOutputType | null
+    _max: VaccineMaxAggregateOutputType | null
+  }
+
+  export type VaccineMinAggregateOutputType = {
+    id: string | null
+    vaccineName: string | null
+    dose: string | null
+    vaccinationDate: Date | null
+    vaccinationPlace: string | null
+    healthProfessional: string | null
+    vaccineLot: string | null
+    vaccineProofUrl: string | null
+    profileId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type VaccineMaxAggregateOutputType = {
+    id: string | null
+    vaccineName: string | null
+    dose: string | null
+    vaccinationDate: Date | null
+    vaccinationPlace: string | null
+    healthProfessional: string | null
+    vaccineLot: string | null
+    vaccineProofUrl: string | null
+    profileId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type VaccineCountAggregateOutputType = {
+    id: number
+    vaccineName: number
+    dose: number
+    vaccinationDate: number
+    vaccinationPlace: number
+    healthProfessional: number
+    vaccineLot: number
+    vaccineProofUrl: number
+    profileId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type VaccineMinAggregateInputType = {
+    id?: true
+    vaccineName?: true
+    dose?: true
+    vaccinationDate?: true
+    vaccinationPlace?: true
+    healthProfessional?: true
+    vaccineLot?: true
+    vaccineProofUrl?: true
+    profileId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type VaccineMaxAggregateInputType = {
+    id?: true
+    vaccineName?: true
+    dose?: true
+    vaccinationDate?: true
+    vaccinationPlace?: true
+    healthProfessional?: true
+    vaccineLot?: true
+    vaccineProofUrl?: true
+    profileId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type VaccineCountAggregateInputType = {
+    id?: true
+    vaccineName?: true
+    dose?: true
+    vaccinationDate?: true
+    vaccinationPlace?: true
+    healthProfessional?: true
+    vaccineLot?: true
+    vaccineProofUrl?: true
+    profileId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type VaccineAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Vaccine to aggregate.
+     */
+    where?: VaccineWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Vaccines to fetch.
+     */
+    orderBy?: VaccineOrderByWithRelationInput | VaccineOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: VaccineWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Vaccines from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Vaccines.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Vaccines
+    **/
+    _count?: true | VaccineCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: VaccineMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: VaccineMaxAggregateInputType
+  }
+
+  export type GetVaccineAggregateType<T extends VaccineAggregateArgs> = {
+        [P in keyof T & keyof AggregateVaccine]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateVaccine[P]>
+      : GetScalarType<T[P], AggregateVaccine[P]>
+  }
+
+
+
+
+  export type VaccineGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VaccineWhereInput
+    orderBy?: VaccineOrderByWithAggregationInput | VaccineOrderByWithAggregationInput[]
+    by: VaccineScalarFieldEnum[] | VaccineScalarFieldEnum
+    having?: VaccineScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: VaccineCountAggregateInputType | true
+    _min?: VaccineMinAggregateInputType
+    _max?: VaccineMaxAggregateInputType
+  }
+
+  export type VaccineGroupByOutputType = {
+    id: string
+    vaccineName: string
+    dose: string
+    vaccinationDate: Date
+    vaccinationPlace: string
+    healthProfessional: string
+    vaccineLot: string | null
+    vaccineProofUrl: string | null
+    profileId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: VaccineCountAggregateOutputType | null
+    _min: VaccineMinAggregateOutputType | null
+    _max: VaccineMaxAggregateOutputType | null
+  }
+
+  type GetVaccineGroupByPayload<T extends VaccineGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<VaccineGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof VaccineGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], VaccineGroupByOutputType[P]>
+            : GetScalarType<T[P], VaccineGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type VaccineSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    vaccineName?: boolean
+    dose?: boolean
+    vaccinationDate?: boolean
+    vaccinationPlace?: boolean
+    healthProfessional?: boolean
+    vaccineLot?: boolean
+    vaccineProofUrl?: boolean
+    profileId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    profile?: boolean | ProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["vaccine"]>
+
+  export type VaccineSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    vaccineName?: boolean
+    dose?: boolean
+    vaccinationDate?: boolean
+    vaccinationPlace?: boolean
+    healthProfessional?: boolean
+    vaccineLot?: boolean
+    vaccineProofUrl?: boolean
+    profileId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    profile?: boolean | ProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["vaccine"]>
+
+  export type VaccineSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    vaccineName?: boolean
+    dose?: boolean
+    vaccinationDate?: boolean
+    vaccinationPlace?: boolean
+    healthProfessional?: boolean
+    vaccineLot?: boolean
+    vaccineProofUrl?: boolean
+    profileId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    profile?: boolean | ProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["vaccine"]>
+
+  export type VaccineSelectScalar = {
+    id?: boolean
+    vaccineName?: boolean
+    dose?: boolean
+    vaccinationDate?: boolean
+    vaccinationPlace?: boolean
+    healthProfessional?: boolean
+    vaccineLot?: boolean
+    vaccineProofUrl?: boolean
+    profileId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type VaccineOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "vaccineName" | "dose" | "vaccinationDate" | "vaccinationPlace" | "healthProfessional" | "vaccineLot" | "vaccineProofUrl" | "profileId" | "createdAt" | "updatedAt", ExtArgs["result"]["vaccine"]>
+  export type VaccineInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    profile?: boolean | ProfileDefaultArgs<ExtArgs>
+  }
+  export type VaccineIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    profile?: boolean | ProfileDefaultArgs<ExtArgs>
+  }
+  export type VaccineIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    profile?: boolean | ProfileDefaultArgs<ExtArgs>
+  }
+
+  export type $VaccinePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Vaccine"
+    objects: {
+      profile: Prisma.$ProfilePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      vaccineName: string
+      dose: string
+      vaccinationDate: Date
+      vaccinationPlace: string
+      healthProfessional: string
+      vaccineLot: string | null
+      vaccineProofUrl: string | null
+      profileId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["vaccine"]>
+    composites: {}
+  }
+
+  type VaccineGetPayload<S extends boolean | null | undefined | VaccineDefaultArgs> = $Result.GetResult<Prisma.$VaccinePayload, S>
+
+  type VaccineCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<VaccineFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: VaccineCountAggregateInputType | true
+    }
+
+  export interface VaccineDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Vaccine'], meta: { name: 'Vaccine' } }
+    /**
+     * Find zero or one Vaccine that matches the filter.
+     * @param {VaccineFindUniqueArgs} args - Arguments to find a Vaccine
+     * @example
+     * // Get one Vaccine
+     * const vaccine = await prisma.vaccine.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends VaccineFindUniqueArgs>(args: SelectSubset<T, VaccineFindUniqueArgs<ExtArgs>>): Prisma__VaccineClient<$Result.GetResult<Prisma.$VaccinePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Vaccine that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {VaccineFindUniqueOrThrowArgs} args - Arguments to find a Vaccine
+     * @example
+     * // Get one Vaccine
+     * const vaccine = await prisma.vaccine.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends VaccineFindUniqueOrThrowArgs>(args: SelectSubset<T, VaccineFindUniqueOrThrowArgs<ExtArgs>>): Prisma__VaccineClient<$Result.GetResult<Prisma.$VaccinePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Vaccine that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VaccineFindFirstArgs} args - Arguments to find a Vaccine
+     * @example
+     * // Get one Vaccine
+     * const vaccine = await prisma.vaccine.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends VaccineFindFirstArgs>(args?: SelectSubset<T, VaccineFindFirstArgs<ExtArgs>>): Prisma__VaccineClient<$Result.GetResult<Prisma.$VaccinePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Vaccine that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VaccineFindFirstOrThrowArgs} args - Arguments to find a Vaccine
+     * @example
+     * // Get one Vaccine
+     * const vaccine = await prisma.vaccine.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends VaccineFindFirstOrThrowArgs>(args?: SelectSubset<T, VaccineFindFirstOrThrowArgs<ExtArgs>>): Prisma__VaccineClient<$Result.GetResult<Prisma.$VaccinePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Vaccines that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VaccineFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Vaccines
+     * const vaccines = await prisma.vaccine.findMany()
+     * 
+     * // Get first 10 Vaccines
+     * const vaccines = await prisma.vaccine.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const vaccineWithIdOnly = await prisma.vaccine.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends VaccineFindManyArgs>(args?: SelectSubset<T, VaccineFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VaccinePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Vaccine.
+     * @param {VaccineCreateArgs} args - Arguments to create a Vaccine.
+     * @example
+     * // Create one Vaccine
+     * const Vaccine = await prisma.vaccine.create({
+     *   data: {
+     *     // ... data to create a Vaccine
+     *   }
+     * })
+     * 
+     */
+    create<T extends VaccineCreateArgs>(args: SelectSubset<T, VaccineCreateArgs<ExtArgs>>): Prisma__VaccineClient<$Result.GetResult<Prisma.$VaccinePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Vaccines.
+     * @param {VaccineCreateManyArgs} args - Arguments to create many Vaccines.
+     * @example
+     * // Create many Vaccines
+     * const vaccine = await prisma.vaccine.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends VaccineCreateManyArgs>(args?: SelectSubset<T, VaccineCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Vaccines and returns the data saved in the database.
+     * @param {VaccineCreateManyAndReturnArgs} args - Arguments to create many Vaccines.
+     * @example
+     * // Create many Vaccines
+     * const vaccine = await prisma.vaccine.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Vaccines and only return the `id`
+     * const vaccineWithIdOnly = await prisma.vaccine.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends VaccineCreateManyAndReturnArgs>(args?: SelectSubset<T, VaccineCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VaccinePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Vaccine.
+     * @param {VaccineDeleteArgs} args - Arguments to delete one Vaccine.
+     * @example
+     * // Delete one Vaccine
+     * const Vaccine = await prisma.vaccine.delete({
+     *   where: {
+     *     // ... filter to delete one Vaccine
+     *   }
+     * })
+     * 
+     */
+    delete<T extends VaccineDeleteArgs>(args: SelectSubset<T, VaccineDeleteArgs<ExtArgs>>): Prisma__VaccineClient<$Result.GetResult<Prisma.$VaccinePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Vaccine.
+     * @param {VaccineUpdateArgs} args - Arguments to update one Vaccine.
+     * @example
+     * // Update one Vaccine
+     * const vaccine = await prisma.vaccine.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends VaccineUpdateArgs>(args: SelectSubset<T, VaccineUpdateArgs<ExtArgs>>): Prisma__VaccineClient<$Result.GetResult<Prisma.$VaccinePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Vaccines.
+     * @param {VaccineDeleteManyArgs} args - Arguments to filter Vaccines to delete.
+     * @example
+     * // Delete a few Vaccines
+     * const { count } = await prisma.vaccine.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends VaccineDeleteManyArgs>(args?: SelectSubset<T, VaccineDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Vaccines.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VaccineUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Vaccines
+     * const vaccine = await prisma.vaccine.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends VaccineUpdateManyArgs>(args: SelectSubset<T, VaccineUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Vaccines and returns the data updated in the database.
+     * @param {VaccineUpdateManyAndReturnArgs} args - Arguments to update many Vaccines.
+     * @example
+     * // Update many Vaccines
+     * const vaccine = await prisma.vaccine.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Vaccines and only return the `id`
+     * const vaccineWithIdOnly = await prisma.vaccine.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends VaccineUpdateManyAndReturnArgs>(args: SelectSubset<T, VaccineUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VaccinePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Vaccine.
+     * @param {VaccineUpsertArgs} args - Arguments to update or create a Vaccine.
+     * @example
+     * // Update or create a Vaccine
+     * const vaccine = await prisma.vaccine.upsert({
+     *   create: {
+     *     // ... data to create a Vaccine
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Vaccine we want to update
+     *   }
+     * })
+     */
+    upsert<T extends VaccineUpsertArgs>(args: SelectSubset<T, VaccineUpsertArgs<ExtArgs>>): Prisma__VaccineClient<$Result.GetResult<Prisma.$VaccinePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Vaccines.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VaccineCountArgs} args - Arguments to filter Vaccines to count.
+     * @example
+     * // Count the number of Vaccines
+     * const count = await prisma.vaccine.count({
+     *   where: {
+     *     // ... the filter for the Vaccines we want to count
+     *   }
+     * })
+    **/
+    count<T extends VaccineCountArgs>(
+      args?: Subset<T, VaccineCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], VaccineCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Vaccine.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VaccineAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends VaccineAggregateArgs>(args: Subset<T, VaccineAggregateArgs>): Prisma.PrismaPromise<GetVaccineAggregateType<T>>
+
+    /**
+     * Group by Vaccine.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VaccineGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends VaccineGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: VaccineGroupByArgs['orderBy'] }
+        : { orderBy?: VaccineGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, VaccineGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVaccineGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Vaccine model
+   */
+  readonly fields: VaccineFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Vaccine.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__VaccineClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    profile<T extends ProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProfileDefaultArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Vaccine model
+   */
+  interface VaccineFieldRefs {
+    readonly id: FieldRef<"Vaccine", 'String'>
+    readonly vaccineName: FieldRef<"Vaccine", 'String'>
+    readonly dose: FieldRef<"Vaccine", 'String'>
+    readonly vaccinationDate: FieldRef<"Vaccine", 'DateTime'>
+    readonly vaccinationPlace: FieldRef<"Vaccine", 'String'>
+    readonly healthProfessional: FieldRef<"Vaccine", 'String'>
+    readonly vaccineLot: FieldRef<"Vaccine", 'String'>
+    readonly vaccineProofUrl: FieldRef<"Vaccine", 'String'>
+    readonly profileId: FieldRef<"Vaccine", 'String'>
+    readonly createdAt: FieldRef<"Vaccine", 'DateTime'>
+    readonly updatedAt: FieldRef<"Vaccine", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Vaccine findUnique
+   */
+  export type VaccineFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vaccine
+     */
+    select?: VaccineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vaccine
+     */
+    omit?: VaccineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VaccineInclude<ExtArgs> | null
+    /**
+     * Filter, which Vaccine to fetch.
+     */
+    where: VaccineWhereUniqueInput
+  }
+
+  /**
+   * Vaccine findUniqueOrThrow
+   */
+  export type VaccineFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vaccine
+     */
+    select?: VaccineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vaccine
+     */
+    omit?: VaccineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VaccineInclude<ExtArgs> | null
+    /**
+     * Filter, which Vaccine to fetch.
+     */
+    where: VaccineWhereUniqueInput
+  }
+
+  /**
+   * Vaccine findFirst
+   */
+  export type VaccineFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vaccine
+     */
+    select?: VaccineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vaccine
+     */
+    omit?: VaccineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VaccineInclude<ExtArgs> | null
+    /**
+     * Filter, which Vaccine to fetch.
+     */
+    where?: VaccineWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Vaccines to fetch.
+     */
+    orderBy?: VaccineOrderByWithRelationInput | VaccineOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Vaccines.
+     */
+    cursor?: VaccineWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Vaccines from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Vaccines.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Vaccines.
+     */
+    distinct?: VaccineScalarFieldEnum | VaccineScalarFieldEnum[]
+  }
+
+  /**
+   * Vaccine findFirstOrThrow
+   */
+  export type VaccineFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vaccine
+     */
+    select?: VaccineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vaccine
+     */
+    omit?: VaccineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VaccineInclude<ExtArgs> | null
+    /**
+     * Filter, which Vaccine to fetch.
+     */
+    where?: VaccineWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Vaccines to fetch.
+     */
+    orderBy?: VaccineOrderByWithRelationInput | VaccineOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Vaccines.
+     */
+    cursor?: VaccineWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Vaccines from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Vaccines.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Vaccines.
+     */
+    distinct?: VaccineScalarFieldEnum | VaccineScalarFieldEnum[]
+  }
+
+  /**
+   * Vaccine findMany
+   */
+  export type VaccineFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vaccine
+     */
+    select?: VaccineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vaccine
+     */
+    omit?: VaccineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VaccineInclude<ExtArgs> | null
+    /**
+     * Filter, which Vaccines to fetch.
+     */
+    where?: VaccineWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Vaccines to fetch.
+     */
+    orderBy?: VaccineOrderByWithRelationInput | VaccineOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Vaccines.
+     */
+    cursor?: VaccineWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Vaccines from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Vaccines.
+     */
+    skip?: number
+    distinct?: VaccineScalarFieldEnum | VaccineScalarFieldEnum[]
+  }
+
+  /**
+   * Vaccine create
+   */
+  export type VaccineCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vaccine
+     */
+    select?: VaccineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vaccine
+     */
+    omit?: VaccineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VaccineInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Vaccine.
+     */
+    data: XOR<VaccineCreateInput, VaccineUncheckedCreateInput>
+  }
+
+  /**
+   * Vaccine createMany
+   */
+  export type VaccineCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Vaccines.
+     */
+    data: VaccineCreateManyInput | VaccineCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Vaccine createManyAndReturn
+   */
+  export type VaccineCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vaccine
+     */
+    select?: VaccineSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vaccine
+     */
+    omit?: VaccineOmit<ExtArgs> | null
+    /**
+     * The data used to create many Vaccines.
+     */
+    data: VaccineCreateManyInput | VaccineCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VaccineIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Vaccine update
+   */
+  export type VaccineUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vaccine
+     */
+    select?: VaccineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vaccine
+     */
+    omit?: VaccineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VaccineInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Vaccine.
+     */
+    data: XOR<VaccineUpdateInput, VaccineUncheckedUpdateInput>
+    /**
+     * Choose, which Vaccine to update.
+     */
+    where: VaccineWhereUniqueInput
+  }
+
+  /**
+   * Vaccine updateMany
+   */
+  export type VaccineUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Vaccines.
+     */
+    data: XOR<VaccineUpdateManyMutationInput, VaccineUncheckedUpdateManyInput>
+    /**
+     * Filter which Vaccines to update
+     */
+    where?: VaccineWhereInput
+    /**
+     * Limit how many Vaccines to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Vaccine updateManyAndReturn
+   */
+  export type VaccineUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vaccine
+     */
+    select?: VaccineSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vaccine
+     */
+    omit?: VaccineOmit<ExtArgs> | null
+    /**
+     * The data used to update Vaccines.
+     */
+    data: XOR<VaccineUpdateManyMutationInput, VaccineUncheckedUpdateManyInput>
+    /**
+     * Filter which Vaccines to update
+     */
+    where?: VaccineWhereInput
+    /**
+     * Limit how many Vaccines to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VaccineIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Vaccine upsert
+   */
+  export type VaccineUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vaccine
+     */
+    select?: VaccineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vaccine
+     */
+    omit?: VaccineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VaccineInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Vaccine to update in case it exists.
+     */
+    where: VaccineWhereUniqueInput
+    /**
+     * In case the Vaccine found by the `where` argument doesn't exist, create a new Vaccine with this data.
+     */
+    create: XOR<VaccineCreateInput, VaccineUncheckedCreateInput>
+    /**
+     * In case the Vaccine was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<VaccineUpdateInput, VaccineUncheckedUpdateInput>
+  }
+
+  /**
+   * Vaccine delete
+   */
+  export type VaccineDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vaccine
+     */
+    select?: VaccineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vaccine
+     */
+    omit?: VaccineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VaccineInclude<ExtArgs> | null
+    /**
+     * Filter which Vaccine to delete.
+     */
+    where: VaccineWhereUniqueInput
+  }
+
+  /**
+   * Vaccine deleteMany
+   */
+  export type VaccineDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Vaccines to delete
+     */
+    where?: VaccineWhereInput
+    /**
+     * Limit how many Vaccines to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Vaccine without action
+   */
+  export type VaccineDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vaccine
+     */
+    select?: VaccineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vaccine
+     */
+    omit?: VaccineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VaccineInclude<ExtArgs> | null
   }
 
 
@@ -1971,6 +3303,23 @@ export namespace Prisma {
   };
 
   export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
+
+
+  export const VaccineScalarFieldEnum: {
+    id: 'id',
+    vaccineName: 'vaccineName',
+    dose: 'dose',
+    vaccinationDate: 'vaccinationDate',
+    vaccinationPlace: 'vaccinationPlace',
+    healthProfessional: 'healthProfessional',
+    vaccineLot: 'vaccineLot',
+    vaccineProofUrl: 'vaccineProofUrl',
+    profileId: 'profileId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type VaccineScalarFieldEnum = (typeof VaccineScalarFieldEnum)[keyof typeof VaccineScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -2062,6 +3411,7 @@ export namespace Prisma {
     role?: StringFilter<"Profile"> | string
     createdAt?: DateTimeFilter<"Profile"> | Date | string
     updatedAt?: DateTimeFilter<"Profile"> | Date | string
+    vaccines?: VaccineListRelationFilter
   }
 
   export type ProfileOrderByWithRelationInput = {
@@ -2076,6 +3426,7 @@ export namespace Prisma {
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    vaccines?: VaccineOrderByRelationAggregateInput
   }
 
   export type ProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -2093,6 +3444,7 @@ export namespace Prisma {
     role?: StringFilter<"Profile"> | string
     createdAt?: DateTimeFilter<"Profile"> | Date | string
     updatedAt?: DateTimeFilter<"Profile"> | Date | string
+    vaccines?: VaccineListRelationFilter
   }, "id" | "email" | "documentId">
 
   export type ProfileOrderByWithAggregationInput = {
@@ -2129,6 +3481,91 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Profile"> | Date | string
   }
 
+  export type VaccineWhereInput = {
+    AND?: VaccineWhereInput | VaccineWhereInput[]
+    OR?: VaccineWhereInput[]
+    NOT?: VaccineWhereInput | VaccineWhereInput[]
+    id?: UuidFilter<"Vaccine"> | string
+    vaccineName?: StringFilter<"Vaccine"> | string
+    dose?: StringFilter<"Vaccine"> | string
+    vaccinationDate?: DateTimeFilter<"Vaccine"> | Date | string
+    vaccinationPlace?: StringFilter<"Vaccine"> | string
+    healthProfessional?: StringFilter<"Vaccine"> | string
+    vaccineLot?: StringNullableFilter<"Vaccine"> | string | null
+    vaccineProofUrl?: StringNullableFilter<"Vaccine"> | string | null
+    profileId?: UuidFilter<"Vaccine"> | string
+    createdAt?: DateTimeFilter<"Vaccine"> | Date | string
+    updatedAt?: DateTimeFilter<"Vaccine"> | Date | string
+    profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
+  }
+
+  export type VaccineOrderByWithRelationInput = {
+    id?: SortOrder
+    vaccineName?: SortOrder
+    dose?: SortOrder
+    vaccinationDate?: SortOrder
+    vaccinationPlace?: SortOrder
+    healthProfessional?: SortOrder
+    vaccineLot?: SortOrderInput | SortOrder
+    vaccineProofUrl?: SortOrderInput | SortOrder
+    profileId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    profile?: ProfileOrderByWithRelationInput
+  }
+
+  export type VaccineWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: VaccineWhereInput | VaccineWhereInput[]
+    OR?: VaccineWhereInput[]
+    NOT?: VaccineWhereInput | VaccineWhereInput[]
+    vaccineName?: StringFilter<"Vaccine"> | string
+    dose?: StringFilter<"Vaccine"> | string
+    vaccinationDate?: DateTimeFilter<"Vaccine"> | Date | string
+    vaccinationPlace?: StringFilter<"Vaccine"> | string
+    healthProfessional?: StringFilter<"Vaccine"> | string
+    vaccineLot?: StringNullableFilter<"Vaccine"> | string | null
+    vaccineProofUrl?: StringNullableFilter<"Vaccine"> | string | null
+    profileId?: UuidFilter<"Vaccine"> | string
+    createdAt?: DateTimeFilter<"Vaccine"> | Date | string
+    updatedAt?: DateTimeFilter<"Vaccine"> | Date | string
+    profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
+  }, "id">
+
+  export type VaccineOrderByWithAggregationInput = {
+    id?: SortOrder
+    vaccineName?: SortOrder
+    dose?: SortOrder
+    vaccinationDate?: SortOrder
+    vaccinationPlace?: SortOrder
+    healthProfessional?: SortOrder
+    vaccineLot?: SortOrderInput | SortOrder
+    vaccineProofUrl?: SortOrderInput | SortOrder
+    profileId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: VaccineCountOrderByAggregateInput
+    _max?: VaccineMaxOrderByAggregateInput
+    _min?: VaccineMinOrderByAggregateInput
+  }
+
+  export type VaccineScalarWhereWithAggregatesInput = {
+    AND?: VaccineScalarWhereWithAggregatesInput | VaccineScalarWhereWithAggregatesInput[]
+    OR?: VaccineScalarWhereWithAggregatesInput[]
+    NOT?: VaccineScalarWhereWithAggregatesInput | VaccineScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"Vaccine"> | string
+    vaccineName?: StringWithAggregatesFilter<"Vaccine"> | string
+    dose?: StringWithAggregatesFilter<"Vaccine"> | string
+    vaccinationDate?: DateTimeWithAggregatesFilter<"Vaccine"> | Date | string
+    vaccinationPlace?: StringWithAggregatesFilter<"Vaccine"> | string
+    healthProfessional?: StringWithAggregatesFilter<"Vaccine"> | string
+    vaccineLot?: StringNullableWithAggregatesFilter<"Vaccine"> | string | null
+    vaccineProofUrl?: StringNullableWithAggregatesFilter<"Vaccine"> | string | null
+    profileId?: UuidWithAggregatesFilter<"Vaccine"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Vaccine"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Vaccine"> | Date | string
+  }
+
   export type ProfileCreateInput = {
     id: string
     email?: string | null
@@ -2141,6 +3578,7 @@ export namespace Prisma {
     role?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    vaccines?: VaccineCreateNestedManyWithoutProfileInput
   }
 
   export type ProfileUncheckedCreateInput = {
@@ -2155,6 +3593,7 @@ export namespace Prisma {
     role?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    vaccines?: VaccineUncheckedCreateNestedManyWithoutProfileInput
   }
 
   export type ProfileUpdateInput = {
@@ -2169,6 +3608,7 @@ export namespace Prisma {
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    vaccines?: VaccineUpdateManyWithoutProfileNestedInput
   }
 
   export type ProfileUncheckedUpdateInput = {
@@ -2183,6 +3623,7 @@ export namespace Prisma {
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    vaccines?: VaccineUncheckedUpdateManyWithoutProfileNestedInput
   }
 
   export type ProfileCreateManyInput = {
@@ -2223,6 +3664,103 @@ export namespace Prisma {
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VaccineCreateInput = {
+    id?: string
+    vaccineName: string
+    dose: string
+    vaccinationDate: Date | string
+    vaccinationPlace: string
+    healthProfessional: string
+    vaccineLot?: string | null
+    vaccineProofUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    profile: ProfileCreateNestedOneWithoutVaccinesInput
+  }
+
+  export type VaccineUncheckedCreateInput = {
+    id?: string
+    vaccineName: string
+    dose: string
+    vaccinationDate: Date | string
+    vaccinationPlace: string
+    healthProfessional: string
+    vaccineLot?: string | null
+    vaccineProofUrl?: string | null
+    profileId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VaccineUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    vaccineName?: StringFieldUpdateOperationsInput | string
+    dose?: StringFieldUpdateOperationsInput | string
+    vaccinationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    vaccinationPlace?: StringFieldUpdateOperationsInput | string
+    healthProfessional?: StringFieldUpdateOperationsInput | string
+    vaccineLot?: NullableStringFieldUpdateOperationsInput | string | null
+    vaccineProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profile?: ProfileUpdateOneRequiredWithoutVaccinesNestedInput
+  }
+
+  export type VaccineUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    vaccineName?: StringFieldUpdateOperationsInput | string
+    dose?: StringFieldUpdateOperationsInput | string
+    vaccinationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    vaccinationPlace?: StringFieldUpdateOperationsInput | string
+    healthProfessional?: StringFieldUpdateOperationsInput | string
+    vaccineLot?: NullableStringFieldUpdateOperationsInput | string | null
+    vaccineProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    profileId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VaccineCreateManyInput = {
+    id?: string
+    vaccineName: string
+    dose: string
+    vaccinationDate: Date | string
+    vaccinationPlace: string
+    healthProfessional: string
+    vaccineLot?: string | null
+    vaccineProofUrl?: string | null
+    profileId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VaccineUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    vaccineName?: StringFieldUpdateOperationsInput | string
+    dose?: StringFieldUpdateOperationsInput | string
+    vaccinationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    vaccinationPlace?: StringFieldUpdateOperationsInput | string
+    healthProfessional?: StringFieldUpdateOperationsInput | string
+    vaccineLot?: NullableStringFieldUpdateOperationsInput | string | null
+    vaccineProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VaccineUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    vaccineName?: StringFieldUpdateOperationsInput | string
+    dose?: StringFieldUpdateOperationsInput | string
+    vaccinationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    vaccinationPlace?: StringFieldUpdateOperationsInput | string
+    healthProfessional?: StringFieldUpdateOperationsInput | string
+    vaccineLot?: NullableStringFieldUpdateOperationsInput | string | null
+    vaccineProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    profileId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2291,9 +3829,19 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type VaccineListRelationFilter = {
+    every?: VaccineWhereInput
+    some?: VaccineWhereInput
+    none?: VaccineWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
+  }
+
+  export type VaccineOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type ProfileCountOrderByAggregateInput = {
@@ -2417,6 +3965,67 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type ProfileScalarRelationFilter = {
+    is?: ProfileWhereInput
+    isNot?: ProfileWhereInput
+  }
+
+  export type VaccineCountOrderByAggregateInput = {
+    id?: SortOrder
+    vaccineName?: SortOrder
+    dose?: SortOrder
+    vaccinationDate?: SortOrder
+    vaccinationPlace?: SortOrder
+    healthProfessional?: SortOrder
+    vaccineLot?: SortOrder
+    vaccineProofUrl?: SortOrder
+    profileId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VaccineMaxOrderByAggregateInput = {
+    id?: SortOrder
+    vaccineName?: SortOrder
+    dose?: SortOrder
+    vaccinationDate?: SortOrder
+    vaccinationPlace?: SortOrder
+    healthProfessional?: SortOrder
+    vaccineLot?: SortOrder
+    vaccineProofUrl?: SortOrder
+    profileId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VaccineMinOrderByAggregateInput = {
+    id?: SortOrder
+    vaccineName?: SortOrder
+    dose?: SortOrder
+    vaccinationDate?: SortOrder
+    vaccinationPlace?: SortOrder
+    healthProfessional?: SortOrder
+    vaccineLot?: SortOrder
+    vaccineProofUrl?: SortOrder
+    profileId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VaccineCreateNestedManyWithoutProfileInput = {
+    create?: XOR<VaccineCreateWithoutProfileInput, VaccineUncheckedCreateWithoutProfileInput> | VaccineCreateWithoutProfileInput[] | VaccineUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: VaccineCreateOrConnectWithoutProfileInput | VaccineCreateOrConnectWithoutProfileInput[]
+    createMany?: VaccineCreateManyProfileInputEnvelope
+    connect?: VaccineWhereUniqueInput | VaccineWhereUniqueInput[]
+  }
+
+  export type VaccineUncheckedCreateNestedManyWithoutProfileInput = {
+    create?: XOR<VaccineCreateWithoutProfileInput, VaccineUncheckedCreateWithoutProfileInput> | VaccineCreateWithoutProfileInput[] | VaccineUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: VaccineCreateOrConnectWithoutProfileInput | VaccineCreateOrConnectWithoutProfileInput[]
+    createMany?: VaccineCreateManyProfileInputEnvelope
+    connect?: VaccineWhereUniqueInput | VaccineWhereUniqueInput[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -2431,6 +4040,48 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type VaccineUpdateManyWithoutProfileNestedInput = {
+    create?: XOR<VaccineCreateWithoutProfileInput, VaccineUncheckedCreateWithoutProfileInput> | VaccineCreateWithoutProfileInput[] | VaccineUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: VaccineCreateOrConnectWithoutProfileInput | VaccineCreateOrConnectWithoutProfileInput[]
+    upsert?: VaccineUpsertWithWhereUniqueWithoutProfileInput | VaccineUpsertWithWhereUniqueWithoutProfileInput[]
+    createMany?: VaccineCreateManyProfileInputEnvelope
+    set?: VaccineWhereUniqueInput | VaccineWhereUniqueInput[]
+    disconnect?: VaccineWhereUniqueInput | VaccineWhereUniqueInput[]
+    delete?: VaccineWhereUniqueInput | VaccineWhereUniqueInput[]
+    connect?: VaccineWhereUniqueInput | VaccineWhereUniqueInput[]
+    update?: VaccineUpdateWithWhereUniqueWithoutProfileInput | VaccineUpdateWithWhereUniqueWithoutProfileInput[]
+    updateMany?: VaccineUpdateManyWithWhereWithoutProfileInput | VaccineUpdateManyWithWhereWithoutProfileInput[]
+    deleteMany?: VaccineScalarWhereInput | VaccineScalarWhereInput[]
+  }
+
+  export type VaccineUncheckedUpdateManyWithoutProfileNestedInput = {
+    create?: XOR<VaccineCreateWithoutProfileInput, VaccineUncheckedCreateWithoutProfileInput> | VaccineCreateWithoutProfileInput[] | VaccineUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: VaccineCreateOrConnectWithoutProfileInput | VaccineCreateOrConnectWithoutProfileInput[]
+    upsert?: VaccineUpsertWithWhereUniqueWithoutProfileInput | VaccineUpsertWithWhereUniqueWithoutProfileInput[]
+    createMany?: VaccineCreateManyProfileInputEnvelope
+    set?: VaccineWhereUniqueInput | VaccineWhereUniqueInput[]
+    disconnect?: VaccineWhereUniqueInput | VaccineWhereUniqueInput[]
+    delete?: VaccineWhereUniqueInput | VaccineWhereUniqueInput[]
+    connect?: VaccineWhereUniqueInput | VaccineWhereUniqueInput[]
+    update?: VaccineUpdateWithWhereUniqueWithoutProfileInput | VaccineUpdateWithWhereUniqueWithoutProfileInput[]
+    updateMany?: VaccineUpdateManyWithWhereWithoutProfileInput | VaccineUpdateManyWithWhereWithoutProfileInput[]
+    deleteMany?: VaccineScalarWhereInput | VaccineScalarWhereInput[]
+  }
+
+  export type ProfileCreateNestedOneWithoutVaccinesInput = {
+    create?: XOR<ProfileCreateWithoutVaccinesInput, ProfileUncheckedCreateWithoutVaccinesInput>
+    connectOrCreate?: ProfileCreateOrConnectWithoutVaccinesInput
+    connect?: ProfileWhereUniqueInput
+  }
+
+  export type ProfileUpdateOneRequiredWithoutVaccinesNestedInput = {
+    create?: XOR<ProfileCreateWithoutVaccinesInput, ProfileUncheckedCreateWithoutVaccinesInput>
+    connectOrCreate?: ProfileCreateOrConnectWithoutVaccinesInput
+    upsert?: ProfileUpsertWithoutVaccinesInput
+    connect?: ProfileWhereUniqueInput
+    update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutVaccinesInput, ProfileUpdateWithoutVaccinesInput>, ProfileUncheckedUpdateWithoutVaccinesInput>
   }
 
   export type NestedUuidFilter<$PrismaModel = never> = {
@@ -2590,6 +4241,199 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type VaccineCreateWithoutProfileInput = {
+    id?: string
+    vaccineName: string
+    dose: string
+    vaccinationDate: Date | string
+    vaccinationPlace: string
+    healthProfessional: string
+    vaccineLot?: string | null
+    vaccineProofUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VaccineUncheckedCreateWithoutProfileInput = {
+    id?: string
+    vaccineName: string
+    dose: string
+    vaccinationDate: Date | string
+    vaccinationPlace: string
+    healthProfessional: string
+    vaccineLot?: string | null
+    vaccineProofUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VaccineCreateOrConnectWithoutProfileInput = {
+    where: VaccineWhereUniqueInput
+    create: XOR<VaccineCreateWithoutProfileInput, VaccineUncheckedCreateWithoutProfileInput>
+  }
+
+  export type VaccineCreateManyProfileInputEnvelope = {
+    data: VaccineCreateManyProfileInput | VaccineCreateManyProfileInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type VaccineUpsertWithWhereUniqueWithoutProfileInput = {
+    where: VaccineWhereUniqueInput
+    update: XOR<VaccineUpdateWithoutProfileInput, VaccineUncheckedUpdateWithoutProfileInput>
+    create: XOR<VaccineCreateWithoutProfileInput, VaccineUncheckedCreateWithoutProfileInput>
+  }
+
+  export type VaccineUpdateWithWhereUniqueWithoutProfileInput = {
+    where: VaccineWhereUniqueInput
+    data: XOR<VaccineUpdateWithoutProfileInput, VaccineUncheckedUpdateWithoutProfileInput>
+  }
+
+  export type VaccineUpdateManyWithWhereWithoutProfileInput = {
+    where: VaccineScalarWhereInput
+    data: XOR<VaccineUpdateManyMutationInput, VaccineUncheckedUpdateManyWithoutProfileInput>
+  }
+
+  export type VaccineScalarWhereInput = {
+    AND?: VaccineScalarWhereInput | VaccineScalarWhereInput[]
+    OR?: VaccineScalarWhereInput[]
+    NOT?: VaccineScalarWhereInput | VaccineScalarWhereInput[]
+    id?: UuidFilter<"Vaccine"> | string
+    vaccineName?: StringFilter<"Vaccine"> | string
+    dose?: StringFilter<"Vaccine"> | string
+    vaccinationDate?: DateTimeFilter<"Vaccine"> | Date | string
+    vaccinationPlace?: StringFilter<"Vaccine"> | string
+    healthProfessional?: StringFilter<"Vaccine"> | string
+    vaccineLot?: StringNullableFilter<"Vaccine"> | string | null
+    vaccineProofUrl?: StringNullableFilter<"Vaccine"> | string | null
+    profileId?: UuidFilter<"Vaccine"> | string
+    createdAt?: DateTimeFilter<"Vaccine"> | Date | string
+    updatedAt?: DateTimeFilter<"Vaccine"> | Date | string
+  }
+
+  export type ProfileCreateWithoutVaccinesInput = {
+    id: string
+    email?: string | null
+    name?: string | null
+    lastName?: string | null
+    documentId?: string | null
+    country?: string | null
+    birthDate?: Date | string | null
+    phone?: string | null
+    role?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProfileUncheckedCreateWithoutVaccinesInput = {
+    id: string
+    email?: string | null
+    name?: string | null
+    lastName?: string | null
+    documentId?: string | null
+    country?: string | null
+    birthDate?: Date | string | null
+    phone?: string | null
+    role?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProfileCreateOrConnectWithoutVaccinesInput = {
+    where: ProfileWhereUniqueInput
+    create: XOR<ProfileCreateWithoutVaccinesInput, ProfileUncheckedCreateWithoutVaccinesInput>
+  }
+
+  export type ProfileUpsertWithoutVaccinesInput = {
+    update: XOR<ProfileUpdateWithoutVaccinesInput, ProfileUncheckedUpdateWithoutVaccinesInput>
+    create: XOR<ProfileCreateWithoutVaccinesInput, ProfileUncheckedCreateWithoutVaccinesInput>
+    where?: ProfileWhereInput
+  }
+
+  export type ProfileUpdateToOneWithWhereWithoutVaccinesInput = {
+    where?: ProfileWhereInput
+    data: XOR<ProfileUpdateWithoutVaccinesInput, ProfileUncheckedUpdateWithoutVaccinesInput>
+  }
+
+  export type ProfileUpdateWithoutVaccinesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    documentId?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProfileUncheckedUpdateWithoutVaccinesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    documentId?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VaccineCreateManyProfileInput = {
+    id?: string
+    vaccineName: string
+    dose: string
+    vaccinationDate: Date | string
+    vaccinationPlace: string
+    healthProfessional: string
+    vaccineLot?: string | null
+    vaccineProofUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VaccineUpdateWithoutProfileInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    vaccineName?: StringFieldUpdateOperationsInput | string
+    dose?: StringFieldUpdateOperationsInput | string
+    vaccinationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    vaccinationPlace?: StringFieldUpdateOperationsInput | string
+    healthProfessional?: StringFieldUpdateOperationsInput | string
+    vaccineLot?: NullableStringFieldUpdateOperationsInput | string | null
+    vaccineProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VaccineUncheckedUpdateWithoutProfileInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    vaccineName?: StringFieldUpdateOperationsInput | string
+    dose?: StringFieldUpdateOperationsInput | string
+    vaccinationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    vaccinationPlace?: StringFieldUpdateOperationsInput | string
+    healthProfessional?: StringFieldUpdateOperationsInput | string
+    vaccineLot?: NullableStringFieldUpdateOperationsInput | string | null
+    vaccineProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VaccineUncheckedUpdateManyWithoutProfileInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    vaccineName?: StringFieldUpdateOperationsInput | string
+    dose?: StringFieldUpdateOperationsInput | string
+    vaccinationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    vaccinationPlace?: StringFieldUpdateOperationsInput | string
+    healthProfessional?: StringFieldUpdateOperationsInput | string
+    vaccineLot?: NullableStringFieldUpdateOperationsInput | string | null
+    vaccineProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

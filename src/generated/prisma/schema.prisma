@@ -30,6 +30,24 @@ model Profile {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 
-  // ¡AÑADE ESTA LÍNEA AL FINAL DEL MODELO!
+  vaccines Vaccine[]
+
+  @@schema("public")
+}
+
+model Vaccine {
+  id                 String   @id @default(uuid()) @db.Uuid
+  vaccineName        String
+  dose               String
+  vaccinationDate    DateTime
+  vaccinationPlace   String
+  healthProfessional String
+  vaccineLot         String?
+  vaccineProofUrl    String?
+  profileId          String   @db.Uuid
+  profile            Profile  @relation(fields: [profileId], references: [id])
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
   @@schema("public")
 }

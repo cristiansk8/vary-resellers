@@ -16,7 +16,7 @@ export async function middleware(req: NextRequest) {
   // --- LÓGICA DE AUTENTICACIÓN MEJORADA ---
 
   // 1. Definimos nuestras rutas públicas que no requieren autenticación
-  const publicRoutes = ['/', '/sign-in', '/sign-up'];
+  const publicRoutes = ['/', '/sign-in', '/sign-up', '/forgot-password', '/reset-password'];
   const reqUrl = new URL(req.url);
   const isPublicRoute = publicRoutes.includes(reqUrl.pathname);
 
