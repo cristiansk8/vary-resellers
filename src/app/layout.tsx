@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { I18nProvider } from "@/components/providers/I18nProvider";
-
+import { UserProvider } from '@/store/ui/userContext';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +18,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>        <I18nProvider>
-          {children}
-        </I18nProvider></body>
+      <body className={inter.className}>
+        <I18nProvider>
+          <UserProvider>
+            {children}
+          </UserProvider>
+        </I18nProvider>
+      </body>
     </html>
   );
 }

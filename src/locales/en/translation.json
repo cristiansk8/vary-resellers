@@ -64,7 +64,7 @@
   "myVaccines": "My Vaccines",
   "registeredDependents": "Registered Dependents",
   "quickActions": "Quick Actions",
-  "addMyVaccine": "Add My Vaccine",
+  "addMyVaccine": "Add vaccine",
   "downloadMyCertificate": "Download My Certificate",
   "editMyData": "Edit My Data",
   "manageDependents": "Manage Dependents",
@@ -338,5 +338,13 @@
   "totalVaccinesStat": "Total Vaccines",
   "totalMedicalCentersStat": "Medical Centers",
   "associatedWithAccount": "Associated with account",
-  "emailForConvertedDependentInfo": "The email of a dependent converted to a user cannot be changed here."
+  "emailForConvertedDependentInfo": "The email of a dependent converted to a user cannot be changed here.",
+  "dashboardVaccinesRegistered": "Vaccines registered",
+  "dashboardDependentsRegistered": "Dependents registered",
+  "proof": "Proof",
+  "edit": "Edit",
+  "noVaccinesRegistered": "You have no registered vaccines.",
+  "confirmDeleteDependent": "Are you sure you want to delete this dependent?",
+  "errorDeletingDependent": "Error deleting dependent",
+  "viewVaccinationSchedule": "View vaccination schedule"
 }

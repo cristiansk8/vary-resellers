@@ -64,7 +64,7 @@
   "myVaccines": "Mis Vacunas",
   "registeredDependents": "Familiares Registrados",
   "quickActions": "Acciones Rápidas",
-  "addMyVaccine": "Agregar Mi Vacuna",
+  "addMyVaccine": "Agregar vacuna",
   "downloadMyCertificate": "Descargar Mi Certificado",
   "editMyData": "Editar Mis Datos",
   "manageDependents": "Gestionar Familiares",
@@ -338,5 +338,14 @@
   "totalVaccinesStat": "Vacunas Totales",
   "totalMedicalCentersStat": "Centros Médicos",
   "associatedWithAccount": "Asociado a cuenta",
-  "emailForConvertedDependentInfo": "El email de un familiar convertido a usuario no se puede cambiar aquí."
+  "emailForConvertedDependentInfo": "El email de un familiar convertido a usuario no se puede cambiar aquí.",
+  "dashboardVaccinesRegistered": "Vacunas registradas",
+  "dashboardDependentsRegistered": "Familiares registrados",
+  "proof": "Prueba",
+  "edit": "Editar",
+  "delete": "Eliminar",
+  "noVaccinesRegistered": "No tienes vacunas registradas.",
+  "confirmDeleteDependent": "¿Seguro que deseas eliminar este dependiente?",
+  "errorDeletingDependent": "Error al eliminar el dependiente",
+  "viewVaccinationSchedule": "Ver esquema de vacunación"
 }

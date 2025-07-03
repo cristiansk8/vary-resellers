@@ -64,7 +64,7 @@
   "myVaccines": "Mes Vaccins",
   "registeredDependents": "Proches Enregistrés",
   "quickActions": "Actions Rapides",
-  "addMyVaccine": "Ajouter Mon Vaccin",
+  "addMyVaccine": "Ajouter un vaccin",
   "downloadMyCertificate": "Télécharger Mon Certificat",
   "editMyData": "Modifier Mes Données",
   "manageDependents": "Gérer les Proches",
@@ -338,5 +338,13 @@
   "totalVaccinesStat": "Vaccins Totaux",
   "totalMedicalCentersStat": "Centres Médicaux",
   "associatedWithAccount": "Associé au compte",
-  "emailForConvertedDependentInfo": "L'e-mail d'un proche converti en utilisateur ne peut pas être modifié ici."
+  "emailForConvertedDependentInfo": "L'e-mail d'un proche converti en utilisateur ne peut pas être modifié ici.",
+  "dashboardVaccinesRegistered": "Vaccins enregistrés",
+  "dashboardDependentsRegistered": "Proches enregistrés",
+  "proof": "Preuve",
+  "edit": "Éditer",
+  "delete": "Supprimer",
+  "confirmDeleteDependent": "Êtes-vous sûr de vouloir supprimer ce dépendant ?",
+  "errorDeletingDependent": "Erreur lors de la suppression du dépendant",
+  "viewVaccinationSchedule": "Voir le calendrier vaccinal"
 }

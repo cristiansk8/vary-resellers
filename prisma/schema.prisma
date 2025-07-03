@@ -30,6 +30,7 @@ model Profile {
   updatedAt   DateTime  @updatedAt
 
   vaccines    Vaccine[]
+  dependents  Dependent[] @relation("ProfileDependents")
 
   @@schema("public")
 }
@@ -43,10 +44,29 @@ model Vaccine {
   healthProfessional String
   vaccineLot         String?
   vaccineProofUrl    String?
-  profileId          String   @db.Uuid
-  profile            Profile  @relation(fields: [profileId], references: [id])
+  profileId          String?  @db.Uuid
+  profile            Profile? @relation(fields: [profileId], references: [id])
+  dependentId        String?  @db.Uuid
+  dependent          Dependent? @relation("DependentVaccines", fields: [dependentId], references: [id])
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+
+  @@schema("public")
+}
+
+model Dependent {
+  id           String   @id @default(uuid()) @db.Uuid
+  firstName    String
+  lastName     String
+  relationship String
+  documentId   String   @unique
+  country      String
+  birthDate    DateTime
+  mainAccountId String  @db.Uuid
+  mainAccount  Profile  @relation("ProfileDependents", fields: [mainAccountId], references: [id])
+  vaccines     Vaccine[] @relation("DependentVaccines")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@schema("public")
 }
