@@ -53,19 +53,19 @@ export default function VaccinesList({ vaccines }: { vaccines: Vaccine[] }) {
                 <div className="text-slate-600 text-sm">Profesional: {vac.healthProfessional}</div>
                 {vac.vaccineLot && <div className="text-slate-600 text-sm">Lote: {vac.vaccineLot}</div>}
               </div>
-              {vac.vaccineProofUrl && (
-                <div className="flex items-center gap-2 mt-2 md:mt-0">
+              <div className="flex items-center gap-2 mt-2 md:mt-0">
+                {vac.vaccineProofUrl && (
                   <Link href={`https://fdqdzjviauhracpibtta.supabase.co/storage/v1/object/public/vaccine-proofs/${vac.vaccineProofUrl}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-blue-600 underline text-sm">
                     <FileText className="w-4 h-4" /> {t('proof', 'Prueba')}
                   </Link>
-                  <button className="flex items-center gap-1 text-blue-600 underline text-sm" onClick={() => router.push(`/dashboard/edit-vaccine?id=${vac.id}`)}>
-                    <Edit className="w-4 h-4" /> {t('edit', 'Editar')}
-                  </button>
-                  <button className="flex items-center gap-1 text-red-600 underline text-sm" onClick={() => handleDelete(vac.id)}>
-                    <Trash2 className="w-4 h-4" /> {t('delete', 'Eliminar')}
-                  </button>
-                </div>
-              )}
+                )}
+                <button className="flex items-center gap-1 text-blue-600 underline text-sm" onClick={() => router.push(`/dashboard/edit-vaccine?id=${vac.id}`)}>
+                  <Edit className="w-4 h-4" /> {t('edit', 'Editar')}
+                </button>
+                <button className="flex items-center gap-1 text-red-600 underline text-sm" onClick={() => handleDelete(vac.id)}>
+                  <Trash2 className="w-4 h-4" /> {t('delete', 'Eliminar')}
+                </button>
+              </div>
             </div>
           </div>
         ))}
