@@ -117,9 +117,9 @@ export default function RegisterForm({ mode = 'register', profile }: RegisterFor
       if (!res.ok) {
         setError(data.error || "Error en el registro");
       } else {
-        setSuccess("Registro exitoso. Por favor revisa tu correo electrónico para confirmar tu cuenta.");
-        // Opcional: redirigir después de unos segundos
-        setTimeout(() => router.push("/sign-in"), 4000);
+        setSuccess("Registro exitoso. Ya puedes iniciar sesión.");
+        // Redirigir después de unos segundos
+        setTimeout(() => router.push("/sign-in"), 2000);
       }
     } catch (err) {
       setError("Error inesperado en el registro");

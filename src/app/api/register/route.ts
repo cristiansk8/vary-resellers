@@ -39,11 +39,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Ya existe un perfil con este email" }, { status: 400 });
     }
 
-    // 3. Crear usuario en Supabase Auth usando service role key
+    // 3. Crear usuario en Supabase Auth usando service role key - SIN confirmación de email
     const { data, error } = await supabase.auth.admin.createUser({
       email,
       password,
-      email_confirm: false
+      email_confirm: true  // Usuario confirmado automáticamente
     });
     
     if (error) {
@@ -83,7 +83,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ 
         success: true, 
         profile, 
-        message: 'Usuario registrado exitosamente. Revisa tu correo para el magic link.' 
+        message: 'Usuario registrado exitosamente. Ya puedes iniciar sesión.' 
       });
     } catch (prismaError) {
       // Si falla la creación del perfil, eliminar el usuario de Supabase
