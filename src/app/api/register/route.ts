@@ -32,7 +32,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: error?.message || "No se pudo crear el usuario" }, { status: 400 });
     }
 
-    // 2. Insertar en la tabla Profile usando Prisma
+    // 2. Enviar magic link (invite) al usuario
+    const inviteRes = await supabase.auth.admin.inviteUserByEmail(email, {
+      redirectTo: process.env.NEXT_PUBLIC_MAGIC_LINK_REDIRECT || 'http://localhost:3000/auth/callback',
+    });
+    if (inviteRes.error) {
+      return NextResponse.json({ error: inviteRes.error.message }, { status: 500 });
+    }
+
+    // 3. Insertar en la tabla Profile usando Prisma
     try {
       const profile = await prisma.profile.create({
         data: {
@@ -46,7 +54,7 @@ export async function POST(req: Request) {
           phone
         }
       });
-      return NextResponse.json({ success: true, profile });
+      return NextResponse.json({ success: true, profile, message: 'Usuario registrado. Revisa tu correo para el magic link.' });
     } catch (prismaError) {
       return NextResponse.json({ error: prismaError instanceof Error ? prismaError.message : prismaError }, { status: 500 });
     }
