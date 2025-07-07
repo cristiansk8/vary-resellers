@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma/client";
+import { Pri    // 2. Insertar en la tabla Profile usando PrismamaClient } from "@/generated/prisma/client";
 import { createClient } from '@supabase/supabase-js';
 
 const prisma = new PrismaClient();
@@ -47,7 +47,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No se pudo crear el usuario" }, { status: 400 });
     }
 
-    // 2. Insertar en la tabla Profile usando Prisma
+    // 3. Enviar magic link (invite) al usuario
+    const inviteRes = await supabase.auth.admin.inviteUserByEmail(email, {
+      redirectTo: process.env.NEXT_PUBLIC_MAGIC_LINK_REDIRECT || 'http://localhost:3000/auth/callback',
+    });
+    if (inviteRes.error) {
+      return NextResponse.json({ error: inviteRes.error.message }, { status: 500 });
+    }
+
+    // 5. Insertar en la tabla Profile usando Prisma
     try {
       const profile = await prisma.profile.create({
         data: {
@@ -72,10 +80,7 @@ export async function POST(req: Request) {
       
       const errorMessage = prismaError instanceof Error ? prismaError.message : 'Error desconocido';
       if (errorMessage.includes('Unique constraint')) {
-        return NextResponse.json({ 
-          error: "Ya existe una cuenta con este email", 
-          redirectToLogin: true 
-        }, { status: 400 });
+        return NextResponse.json({ error: "Ya existe un perfil con estos datos" }, { status: 400 });
       }
       return NextResponse.json({ error: errorMessage }, { status: 500 });
     }
