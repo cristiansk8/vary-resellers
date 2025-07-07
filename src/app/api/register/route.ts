@@ -22,17 +22,43 @@ export async function POST(req: Request) {
       phone
     } = body;
 
-    // 1. Crear usuario en Supabase Auth usando service role key
+    // 1. Verificar si el usuario ya existe en Supabase
+    const { data: existingUsers } = await supabase.auth.admin.listUsers();
+    const existingUser = existingUsers.users.find(u => u.email === email);
+    
+    if (existingUser) {
+      return NextResponse.json({ error: "Ya existe un usuario con este email" }, { status: 400 });
+    }
+
+    // 2. Verificar si existe en la tabla Profile
+    const existingProfile = await prisma.profile.findUnique({
+      where: { email }
+    });
+    
+    if (existingProfile) {
+      return NextResponse.json({ error: "Ya existe un perfil con este email" }, { status: 400 });
+    }
+
+    // 3. Crear usuario en Supabase Auth usando service role key
     const { data, error } = await supabase.auth.admin.createUser({
       email,
       password,
       email_confirm: false
     });
-    if (error || !data.user) {
-      return NextResponse.json({ error: error?.message || "No se pudo crear el usuario" }, { status: 400 });
+    
+    if (error) {
+      // Manejo específico para errores de duplicación
+      if (error.message.includes('duplicate key') || error.message.includes('unique constraint')) {
+        return NextResponse.json({ error: "Ya existe un usuario con este email" }, { status: 400 });
+      }
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+    
+    if (!data.user) {
+      return NextResponse.json({ error: "No se pudo crear el usuario" }, { status: 400 });
     }
 
-    // 2. Enviar magic link (invite) al usuario
+    // 3. Enviar magic link (invite) al usuario
     const inviteRes = await supabase.auth.admin.inviteUserByEmail(email, {
       redirectTo: process.env.NEXT_PUBLIC_MAGIC_LINK_REDIRECT || 'http://localhost:3000/auth/callback',
     });
@@ -40,7 +66,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: inviteRes.error.message }, { status: 500 });
     }
 
-    // 3. Insertar en la tabla Profile usando Prisma
+    // 5. Insertar en la tabla Profile usando Prisma
     try {
       const profile = await prisma.profile.create({
         data: {
@@ -54,9 +80,20 @@ export async function POST(req: Request) {
           phone
         }
       });
-      return NextResponse.json({ success: true, profile, message: 'Usuario registrado. Revisa tu correo para el magic link.' });
+      return NextResponse.json({ 
+        success: true, 
+        profile, 
+        message: 'Usuario registrado exitosamente. Revisa tu correo para el magic link.' 
+      });
     } catch (prismaError) {
-      return NextResponse.json({ error: prismaError instanceof Error ? prismaError.message : prismaError }, { status: 500 });
+      // Si falla la creación del perfil, eliminar el usuario de Supabase
+      await supabase.auth.admin.deleteUser(data.user.id);
+      
+      const errorMessage = prismaError instanceof Error ? prismaError.message : 'Error desconocido';
+      if (errorMessage.includes('Unique constraint')) {
+        return NextResponse.json({ error: "Ya existe un perfil con estos datos" }, { status: 400 });
+      }
+      return NextResponse.json({ error: errorMessage }, { status: 500 });
     }
   } catch (err) {
     return NextResponse.json({ error: err instanceof Error ? err.message : err }, { status: 500 });
