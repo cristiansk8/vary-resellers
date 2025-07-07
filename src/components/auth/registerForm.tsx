@@ -115,7 +115,13 @@ export default function RegisterForm({ mode = 'register', profile }: RegisterFor
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || "Error en el registro");
+        // Si el usuario ya existe, mostrar mensaje y redirigir al login
+        if (data.redirectToLogin) {
+          setError(`${data.error}. Serás redirigido al login en 3 segundos.`);
+          setTimeout(() => router.push("/sign-in"), 3000);
+        } else {
+          setError(data.error || "Error en el registro");
+        }
       } else {
         setSuccess("Registro exitoso. Ya puedes iniciar sesión.");
         // Redirigir después de unos segundos
@@ -200,7 +206,23 @@ export default function RegisterForm({ mode = 'register', profile }: RegisterFor
                   </div>
                 </div>
               )}
-              {error && <div className="text-red-500 text-sm">{error}</div>}
+              {error && (
+                <div className="text-red-500 text-sm">
+                  {error}
+                  {error.includes("Ya existe una cuenta") && (
+                    <div className="mt-2">
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        onClick={() => router.push("/sign-in")}
+                        className="w-full"
+                      >
+                        Ir al Login
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              )}
               {success && <div className="text-green-600 text-sm">{success}</div>}
               <Button type="submit" className="w-full mt-2" disabled={loading}>
                 {loading ? (mode === 'edit' ? t('updatingProfile', 'Actualizando...') : t('registering', 'Registrando...')) : (mode === 'edit' ? t('updateProfileButton', 'Actualizar') : t('registerButton', 'Registrarse'))}

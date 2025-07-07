@@ -27,7 +27,10 @@ export async function POST(req: Request) {
     const existingUser = existingUsers.users.find(u => u.email === email);
     
     if (existingUser) {
-      return NextResponse.json({ error: "Ya existe un usuario con este email" }, { status: 400 });
+      return NextResponse.json({ 
+        error: "Ya existe una cuenta con este email", 
+        redirectToLogin: true 
+      }, { status: 400 });
     }
 
     // 2. Verificar si existe en la tabla Profile
@@ -36,7 +39,10 @@ export async function POST(req: Request) {
     });
     
     if (existingProfile) {
-      return NextResponse.json({ error: "Ya existe un perfil con este email" }, { status: 400 });
+      return NextResponse.json({ 
+        error: "Ya existe una cuenta con este email", 
+        redirectToLogin: true 
+      }, { status: 400 });
     }
 
     // 3. Crear usuario en Supabase Auth usando service role key - SIN confirmación de email
@@ -48,8 +54,11 @@ export async function POST(req: Request) {
     
     if (error) {
       // Manejo específico para errores de duplicación
-      if (error.message.includes('duplicate key') || error.message.includes('unique constraint')) {
-        return NextResponse.json({ error: "Ya existe un usuario con este email" }, { status: 400 });
+      if (error.message.includes('duplicate key') || error.message.includes('unique constraint') || error.message.includes('already been registered')) {
+        return NextResponse.json({ 
+          error: "Ya existe una cuenta con este email", 
+          redirectToLogin: true 
+        }, { status: 400 });
       }
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
