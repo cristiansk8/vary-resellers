@@ -79,18 +79,6 @@ export async function POST(request: NextRequest) {
     // Crear cuenta de Supabase para el dependiente
     let supabaseUser = null;
     try {
-      // Crear cliente con permisos de admin usando service role key
-      const supabaseAdmin = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        {
-          auth: {
-            autoRefreshToken: false,
-            persistSession: false
-          }
-        }
-      );
-
       const { data: signUpData, error: signUpError } = await supabaseAdmin.auth.admin.createUser({
         email: dependentEmail,
         password: tempPassword,
@@ -145,10 +133,6 @@ export async function POST(request: NextRequest) {
     } catch (profileError) {
       // Si falla crear el perfil, limpiar el usuario de Supabase
       try {
-        const supabaseAdmin = createClient(
-          process.env.NEXT_PUBLIC_SUPABASE_URL!,
-          process.env.SUPABASE_SERVICE_ROLE_KEY!
-        );
         await supabaseAdmin.auth.admin.deleteUser(supabaseUser.id);
       } catch (cleanupError) {
         console.error('Error limpiando usuario después de fallo:', cleanupError);
@@ -191,10 +175,6 @@ export async function POST(request: NextRequest) {
       // Si falla crear el dependiente, limpiar todo
       try {
         await prisma.profile.delete({ where: { id: supabaseUser.id } });
-        const supabaseAdmin = createClient(
-          process.env.NEXT_PUBLIC_SUPABASE_URL!,
-          process.env.SUPABASE_SERVICE_ROLE_KEY!
-        );
         await supabaseAdmin.auth.admin.deleteUser(supabaseUser.id);
       } catch (cleanupError) {
         console.error('Error limpiando después de fallo:', cleanupError);
@@ -431,10 +411,6 @@ export async function DELETE(request: NextRequest) {
       });
 
       // Eliminar el usuario de Supabase
-      const supabaseAdmin = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-      );
       await supabaseAdmin.auth.admin.deleteUser(dependentId);
 
     } catch (deleteError) {
