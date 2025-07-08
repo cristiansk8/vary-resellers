@@ -346,5 +346,21 @@
   "noVaccinesRegistered": "Você não tem vacinas registradas.",
   "confirmDeleteDependent": "Tem certeza de que deseja excluir este dependente?",
   "errorDeletingDependent": "Erro ao excluir dependente",
-  "viewVaccinationSchedule": "Ver esquema de vacinação"
+  "viewVaccinationSchedule": "Ver esquema de vacinação",
+  "vaccinationSchedule": "Esquema de Vacinação",
+  "vaccinationScheduleTitle": "Esquema de Vacinação para {{name}}",
+  "vaccinationScheduleSubtitle": "Veja o progresso das vacinas de acordo com o cronograma de vacinação de {{country}}",
+  "vaccinationScheduleError": "Erro ao carregar o esquema de vacinação",
+  "vaccinationScheduleErrorDesc": "Não foi possível carregar o esquema de vacinação para {{name}}",
+  "vaccinationScheduleLoading": "Carregando esquema de vacinação...",
+  "vaccinationScheduleNoSchedule": "Não há esquema de vacinação disponível para {{country}}",
+  "vaccinationScheduleCompleted": "Completo",
+  "vaccinationSchedulePending": "Pendente",
+  "vaccinationScheduleAgeRange": "Idade: {{ageRange}}",
+  "vaccinationScheduleVaccinesInAge": "Verifique o status das vacinas recomendadas para",
+  "vaccinationScheduleNoVaccinesAge": "Nenhuma vacina necessária para esta idade",
+  "vaccinationScheduleBackToProfile": "Voltar ao Perfil",
+  "vaccinationScheduleProgress": "{{completed}} de {{total}} vacinas",
+  "vaccinationScheduleAddVaccine": "Adicionar Vacina",
+  "vaccinationScheduleViewAll": "Ver Todas as Vacinas"
 }

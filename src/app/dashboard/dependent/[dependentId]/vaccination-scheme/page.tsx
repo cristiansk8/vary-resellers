@@ -32,16 +32,26 @@ export default function VaccinationSchemePage() {
       if (!dependentId) return;
       
       try {
+        console.log('🔍 Fetching scheme for dependent ID:', dependentId);
         const response = await fetch(`/api/vaccination-scheme/${dependentId}`);
+        
+        console.log('📡 Response status:', response.status);
+        
         if (!response.ok) {
-          throw new Error('Error al cargar el esquema de vacunación');
+          const errorData = await response.json();
+          console.error('❌ API Error:', errorData);
+          throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
         }
         
         const data = await response.json();
+        console.log('✅ Data received:', data);
+        
         setDependent(data.dependent);
         setScheme(data.scheme);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Error desconocido');
+        console.error('❌ Fetch error:', err);
+        const errorMessage = err instanceof Error ? err.message : t('vaccinationScheduleError');
+        setError(errorMessage);
       } finally {
         setLoading(false);
       }
@@ -53,7 +63,7 @@ export default function VaccinationSchemePage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-100">
-        <p className="text-slate-700">Cargando esquema de vacunación...</p>
+        <p className="text-slate-700">{t('vaccinationScheduleLoading')}</p>
       </div>
     );
   }
@@ -63,7 +73,7 @@ export default function VaccinationSchemePage() {
       <div className="min-h-screen flex items-center justify-center bg-slate-100">
         <div className="text-center">
           <p className="text-red-600 mb-4">{error}</p>
-          <Button onClick={() => router.back()}>Volver</Button>
+          <Button onClick={() => router.back()}>{t('vaccinationScheduleBackToProfile')}</Button>
         </div>
       </div>
     );
@@ -89,16 +99,16 @@ export default function VaccinationSchemePage() {
                 <UserIcon className="h-10 w-10 text-blue-700" />
                 <div>
                   <h1 className="text-3xl md:text-4xl font-bold text-blue-800">
-                    Esquema de Vacunación
+                    {t('vaccinationScheduleTitle', { name: `${dependent.firstName} ${dependent.lastName}` })}
                   </h1>
                   <p className="text-lg text-slate-600">
-                    Para {dependent.firstName} {dependent.lastName} ({dependent.country})
+                    {t('vaccinationScheduleSubtitle', { country: dependent.country })}
                   </p>
                 </div>
               </div>
               <Button variant="outline" onClick={() => router.back()}>
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Volver
+                {t('vaccinationScheduleBackToProfile')}
               </Button>
             </div>
 
@@ -108,7 +118,7 @@ export default function VaccinationSchemePage() {
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-slate-600">Completadas</p>
+                      <p className="text-sm text-slate-600">{t('vaccinationScheduleCompleted')}</p>
                       <p className="text-2xl font-bold text-green-600">{completedCount}</p>
                     </div>
                     <CheckCircle className="h-8 w-8 text-green-500" />
@@ -119,7 +129,7 @@ export default function VaccinationSchemePage() {
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-slate-600">Pendientes</p>
+                      <p className="text-sm text-slate-600">{t('vaccinationSchedulePending')}</p>
                       <p className="text-2xl font-bold text-orange-600">{totalCount - completedCount}</p>
                     </div>
                     <Circle className="h-8 w-8 text-orange-500" />
@@ -130,9 +140,9 @@ export default function VaccinationSchemePage() {
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-slate-600">Progreso</p>
+                      <p className="text-sm text-slate-600">{t('vaccinationScheduleProgress', { completed: completedCount, total: totalCount })}</p>
                       <p className="text-2xl font-bold text-blue-600">
-                        {Math.round((completedCount / totalCount) * 100)}%
+                        {totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0}%
                       </p>
                     </div>
                     <div className="w-8 h-8 relative">
@@ -159,8 +169,7 @@ export default function VaccinationSchemePage() {
               <CardContent className="p-4 flex items-start space-x-4">
                 <Info className="h-5 w-5 text-blue-600 mt-1 flex-shrink-0" />
                 <p className="text-sm text-blue-800">
-                  Esta es una guía informativa basada en el esquema de vacunación estándar para {dependent.country}. 
-                  No reemplaza la consulta médica. Hable siempre con un profesional de la salud para obtener recomendaciones personalizadas.
+                  {t('vaccinationScheduleNoSchedule', { country: dependent.country })}
                 </p>
               </CardContent>
             </Card>
@@ -173,9 +182,9 @@ export default function VaccinationSchemePage() {
           >
             <Card className="shadow-xl border-slate-200">
               <CardHeader className="bg-slate-50 p-6 rounded-t-lg">
-                <CardTitle className="text-2xl text-blue-800">Lista de Vacunas</CardTitle>
+                <CardTitle className="text-2xl text-blue-800">{t('vaccinationScheduleViewAll')}</CardTitle>
                 <CardDescription className="text-slate-600 mt-1">
-                  Verifique el estado de las vacunas recomendadas para {dependent.firstName}.
+                  {t('vaccinationScheduleVaccinesInAge')} {dependent.firstName}.
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-0">
@@ -192,7 +201,7 @@ export default function VaccinationSchemePage() {
                           <p className="font-semibold text-slate-800 text-base">{vaccine.name}</p>
                           <p className="text-sm text-slate-500 flex items-center">
                             <Calendar className="h-3.5 w-3.5 mr-1.5" />
-                            Edad recomendada: {vaccine.age}
+                            {t('vaccinationScheduleAgeRange', { ageRange: vaccine.age })}
                           </p>
                         </div>
                       </div>
@@ -201,13 +210,13 @@ export default function VaccinationSchemePage() {
                           ? 'bg-green-100 text-green-800' 
                           : 'bg-orange-100 text-orange-800'
                       }`}>
-                        {vaccine.completed ? 'Completada' : 'Pendiente'}
+                        {vaccine.completed ? t('vaccinationScheduleCompleted') : t('vaccinationSchedulePending')}
                       </div>
                     </div>
                   )) : (
                     <div className="p-6 text-center text-slate-500">
                       <HelpCircle className="h-12 w-12 mx-auto text-slate-300 mb-4" />
-                      No se encontró un esquema de vacunación para {dependent.country}. Usando guía general.
+                      {t('vaccinationScheduleNoSchedule', { country: dependent.country })}
                     </div>
                   )}
                 </div>

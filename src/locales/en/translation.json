@@ -346,5 +346,21 @@
   "noVaccinesRegistered": "You have no registered vaccines.",
   "confirmDeleteDependent": "Are you sure you want to delete this dependent?",
   "errorDeletingDependent": "Error deleting dependent",
-  "viewVaccinationSchedule": "View vaccination schedule"
+  "viewVaccinationSchedule": "View vaccination schedule",
+  "vaccinationSchedule": "Vaccination Schedule",
+  "vaccinationScheduleTitle": "Vaccination Schedule for {{name}}",
+  "vaccinationScheduleSubtitle": "See vaccine progress according to {{country}} vaccination schedule",
+  "vaccinationScheduleError": "Error loading vaccination schedule",
+  "vaccinationScheduleErrorDesc": "Unable to load vaccination schedule for {{name}}",
+  "vaccinationScheduleLoading": "Loading vaccination schedule...",
+  "vaccinationScheduleNoSchedule": "No vaccination schedule available for {{country}}",
+  "vaccinationScheduleCompleted": "Completed",
+  "vaccinationSchedulePending": "Pending",
+  "vaccinationScheduleAgeRange": "Age: {{ageRange}}",
+  "vaccinationScheduleVaccinesInAge": "Check the status of recommended vaccines for",
+  "vaccinationScheduleNoVaccinesAge": "No vaccines required for this age",
+  "vaccinationScheduleBackToProfile": "Back to Profile",
+  "vaccinationScheduleProgress": "{{completed}} of {{total}} vaccines",
+  "vaccinationScheduleAddVaccine": "Add Vaccine",
+  "vaccinationScheduleViewAll": "View All Vaccines"
 }

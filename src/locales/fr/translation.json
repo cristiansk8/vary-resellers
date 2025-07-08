@@ -346,5 +346,21 @@
   "delete": "Supprimer",
   "confirmDeleteDependent": "Êtes-vous sûr de vouloir supprimer ce dépendant ?",
   "errorDeletingDependent": "Erreur lors de la suppression du dépendant",
-  "viewVaccinationSchedule": "Voir le calendrier vaccinal"
+  "viewVaccinationSchedule": "Voir le calendrier vaccinal",
+  "vaccinationSchedule": "Calendrier Vaccinal",
+  "vaccinationScheduleTitle": "Calendrier Vaccinal pour {{name}}",
+  "vaccinationScheduleSubtitle": "Voir le progrès des vaccins selon le calendrier vaccinal de {{country}}",
+  "vaccinationScheduleError": "Erreur lors du chargement du calendrier vaccinal",
+  "vaccinationScheduleErrorDesc": "Impossible de charger le calendrier vaccinal pour {{name}}",
+  "vaccinationScheduleLoading": "Chargement du calendrier vaccinal...",
+  "vaccinationScheduleNoSchedule": "Aucun calendrier vaccinal disponible pour {{country}}",
+  "vaccinationScheduleCompleted": "Terminé",
+  "vaccinationSchedulePending": "En attente",
+  "vaccinationScheduleAgeRange": "Âge : {{ageRange}}",
+  "vaccinationScheduleVaccinesInAge": "Vérifiez l'état des vaccins recommandés pour",
+  "vaccinationScheduleNoVaccinesAge": "Aucun vaccin requis pour cet âge",
+  "vaccinationScheduleBackToProfile": "Retour au Profil",
+  "vaccinationScheduleProgress": "{{completed}} sur {{total}} vaccins",
+  "vaccinationScheduleAddVaccine": "Ajouter Vaccin",
+  "vaccinationScheduleViewAll": "Voir Tous les Vaccins"
 }
