@@ -33,7 +33,12 @@ export default function AddDependentForm({ initialData, mode = 'add' }: AddDepen
     country: initialData?.country || '',
   });
   const [loading, setLoading] = useState(false);
-  const [tempPassword, setTempPassword] = useState('');
+  const [showLoginInfo, setShowLoginInfo] = useState(false);
+  const [loginInfo, setLoginInfo] = useState<{
+    email: string;
+    documentId: string;
+    tempPassword: string;
+  } | null>(null);
 
   const relationships = [
     t('relationshipSonDaughter'),
@@ -54,12 +59,15 @@ export default function AddDependentForm({ initialData, mode = 'add' }: AddDepen
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    setTempPassword('');
+    setShowLoginInfo(false);
+    setLoginInfo(null);
+    
     if (!formData.firstName || !formData.lastName || !formData.relationship || !formData.documentId || !formData.birthDate || !formData.country) {
       alert(t('completeAllFieldsToast'));
       setLoading(false);
       return;
     }
+    
     try {
       if (mode === 'edit' && initialData?.id) {
         const res = await fetch(`/api/dependent?id=${initialData.id}`, {
@@ -69,6 +77,7 @@ export default function AddDependentForm({ initialData, mode = 'add' }: AddDepen
         });
         const data = await res.json();
         if (data.success) {
+          alert(t('dependentUpdatedToastTitle'));
           window.location.href = '/dashboard/manage-dependents';
         } else {
           alert(data.error || 'Error');
@@ -81,13 +90,15 @@ export default function AddDependentForm({ initialData, mode = 'add' }: AddDepen
         });
         const data = await res.json();
         if (data.success) {
-          // Aquí podrías mostrar un toast o feedback visual
-          setTempPassword('temporal123'); // Simulación, puedes mostrar info real si la generas
+          // Mostrar información de login del dependiente
+          setLoginInfo(data.loginInfo);
+          setShowLoginInfo(true);
         } else {
           alert(data.error || 'Error');
         }
       }
     } catch (err) {
+      console.error('Error:', err);
       alert('Error');
     } finally {
       setLoading(false);
@@ -150,25 +161,37 @@ export default function AddDependentForm({ initialData, mode = 'add' }: AddDepen
                   <Label htmlFor="birthDate" className="text-slate-700 font-medium flex items-center text-sm sm:text-base"><Calendar className="w-4 h-4 mr-2 text-slate-400"/>{t('birthDateLabel')}</Label>
                   <Input id="birthDate" name="birthDate" type="date" value={formData.birthDate} onChange={handleChange} required className="h-10 sm:h-11 text-sm sm:text-base"/>
                 </div>
-                {tempPassword && (
+                {showLoginInfo && loginInfo && (
                   <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-center">
                     <Key className="w-8 h-8 text-green-600 mx-auto mb-2" />
                     <p className="text-green-800 font-semibold text-sm">{t('dependentAccountCreated')}</p>
                     <p className="text-green-700 text-xs">{t('dependentLoginInfo')}</p>
                     <p className="text-green-700 text-xs mt-1">
-                      {t('loginIdentifierLabel')}: <span className="font-bold">{formData.documentId}</span> ({t('orEmail')}: {formData.documentId}@vacun.org)
+                      {t('loginIdentifierLabel')}: <span className="font-bold">{loginInfo.documentId}</span> {t('orEmail')}: <span className="font-bold">{loginInfo.email}</span>
                     </p>
                     <p className="text-green-700 text-xs">
-                      {t('temporaryPasswordLabel')}: <span className="font-bold">{tempPassword}</span>
+                      {t('temporaryPasswordLabel')}: <span className="font-bold">{loginInfo.tempPassword}</span>
                     </p>
+                    <div className="mt-3">
+                      <Link href="/dashboard/manage-dependents">
+                        <Button className="bg-green-600 hover:bg-green-700">
+                          {t('goToDependentsList')}
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
                 )}
-                {!tempPassword && (
+                {!showLoginInfo && (
                   <Button type="submit" className="w-full bg-blue-700 hover:bg-blue-800 text-white py-2.5 sm:py-3 text-sm sm:text-base h-10 sm:h-11" disabled={loading}>
                     {loading ? t('adding') : (<><UserPlus className="mr-2 h-4 w-4" /> {mode === 'edit' ? t('saveChanges') : t('saveDependent')}</>)}
                   </Button>
                 )}
               </form>
+              {showLoginInfo && (
+                <div className="mt-4 text-center text-xs text-slate-600">
+                  <p>{t('dependentLoginInfo')}</p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
