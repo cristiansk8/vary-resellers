@@ -2,7 +2,7 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
-import { Plus, Users, FileText, Edit } from 'lucide-react';
+import { Plus, Users, FileText, Edit, Calendar } from 'lucide-react';
 import { useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { generateCertificatePDF } from '@/lib/pdfGenerator';
@@ -91,9 +91,9 @@ export default function DashboardQuickActionsCard({ userName, vaccines, profile,
       </CardContent>
       {isDependent && (
         <div className="mt-4 max-w-2xl mx-auto">
-          <Link href="/dashboard/vaccination-schedule">
+          <Link href={`/dashboard/dependent/${profile?.id}/vaccination-scheme`}>
             <button className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition text-base font-semibold shadow-md mb-4">
-              <Users className="w-5 h-5" /> {t('viewVaccinationSchedule', 'Ver esquema de vacunación')}
+              <Calendar className="w-5 h-5" /> {t('viewVaccinationSchedule', 'Ver esquema de vacunación')}
             </button>
           </Link>
         </div>
