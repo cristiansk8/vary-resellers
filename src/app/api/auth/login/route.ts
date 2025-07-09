@@ -9,7 +9,10 @@ export async function POST(request: NextRequest) {
   try {
     const { loginIdentifier, password } = await request.json();
     
+    console.log('🔐 Login attempt:', { loginIdentifier, hasPassword: !!password });
+    
     if (!loginIdentifier || !password) {
+      console.log('❌ Missing credentials');
       return NextResponse.json(
         { error: 'Login identifier and password are required' },
         { status: 400 }
@@ -19,13 +22,23 @@ export async function POST(request: NextRequest) {
     const supabase = createRouteHandlerClient({ cookies });
 
     // Primero intentamos como email directo
+    console.log('📧 Attempting direct email login...');
     let authResult = await supabase.auth.signInWithPassword({
       email: loginIdentifier,
       password
     });
 
+    console.log('📧 Direct email result:', { 
+      success: !authResult.error, 
+      error: authResult.error?.message,
+      userId: authResult.data?.user?.id 
+    });
+
     // Si falla y no es un email válido, buscamos por número de documento
     if (authResult.error && !loginIdentifier.includes('@')) {
+      console.log('🆔 Direct email failed, trying document lookup...');
+      console.log('🔍 Searching for document:', loginIdentifier);
+      
       try {
         // Buscar el usuario por número de documento en nuestra tabla Profile
         const profile = await prisma.profile.findUnique({
@@ -36,19 +49,36 @@ export async function POST(request: NextRequest) {
             email: true,
             id: true,
             name: true,
-            lastName: true
+            lastName: true,
+            role: true
           }
         });
 
+        console.log('📊 Profile lookup result:', { 
+          found: !!profile, 
+          email: profile?.email,
+          role: profile?.role,
+          id: profile?.id 
+        });
+
         if (profile && profile.email) {
+          console.log('📧 Found profile, attempting login with email:', profile.email);
           // Si encontramos el perfil, intentamos login con el email
           authResult = await supabase.auth.signInWithPassword({
             email: profile.email,
             password
           });
+          
+          console.log('📧 Email login result:', { 
+            success: !authResult.error, 
+            error: authResult.error?.message,
+            userId: authResult.data?.user?.id 
+          });
+        } else {
+          console.log('❌ No profile found with document:', loginIdentifier);
         }
       } catch (dbError) {
-        console.error('Database error when searching by document:', dbError);
+        console.error('💥 Database error when searching by document:', dbError);
         return NextResponse.json(
           { error: 'Invalid credentials' },
           { status: 401 }
