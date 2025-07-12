@@ -1,37 +1,19 @@
-"use client";
+'use client';
+
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import { UserPlus, User, Calendar, CreditCard, Globe, Save, Users as RelationshipIcon, Key } from 'lucide-react';
-import { countries } from '@/lib/countries';
 import Link from 'next/link';
-import BackToDashboardButton from "@/components/ui/BackToDashboardButton";
 
-interface AddDependentFormProps {
-  initialData?: any;
-  mode?: 'add' | 'edit';
-}
-
-export default function AddDependentForm({ initialData, mode = 'add' }: AddDependentFormProps) {
-  const { t } = useTranslation();
+export default function AddDependentForm() {
   const [formData, setFormData] = useState({
-    firstName: initialData?.firstName || '',
-    lastName: initialData?.lastName || '',
-    relationship: initialData?.relationship || '',
-    documentId: initialData?.documentId || '',
-    birthDate: initialData?.birthDate
-      ? (typeof initialData.birthDate === 'string'
-          ? initialData.birthDate.slice(0, 10)
-          : (initialData.birthDate instanceof Date
-              ? initialData.birthDate.toISOString().slice(0, 10)
-              : ''))
-      : '',
-    country: initialData?.country || '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    relationship: '',
+    documentId: '',
+    birthDate: '',
+    country: '',
   });
+  
   const [loading, setLoading] = useState(false);
   const [showLoginInfo, setShowLoginInfo] = useState(false);
   const [loginInfo, setLoginInfo] = useState<{
@@ -41,19 +23,23 @@ export default function AddDependentForm({ initialData, mode = 'add' }: AddDepen
   } | null>(null);
 
   const relationships = [
-    t('relationshipSonDaughter'),
-    t('relationshipSpouse'),
-    t('relationshipParent'),
-    t('relationshipSibling'),
-    t('relationshipOtherFamily'),
+    'Hijo/Hija',
+    'Cónyuge', 
+    'Padre/Madre',
+    'Hermano/Hermana',
+    'Otro familiar',
   ];
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const countries = [
+    'Colombia',
+    'México',
+    'Argentina',
+    'Chile',
+    'Perú'
+  ];
 
-  const handleSelectChange = (name: string, value: string) => {
-    setFormData({ ...formData, [name]: value });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -62,140 +48,221 @@ export default function AddDependentForm({ initialData, mode = 'add' }: AddDepen
     setShowLoginInfo(false);
     setLoginInfo(null);
     
-    if (!formData.firstName || !formData.lastName || !formData.relationship || !formData.documentId || !formData.birthDate || !formData.country) {
-      alert(t('completeAllFieldsToast'));
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.relationship || !formData.documentId || !formData.birthDate || !formData.country) {
+      alert('Por favor completa todos los campos incluyendo el email');
       setLoading(false);
       return;
     }
     
     try {
-      if (mode === 'edit' && initialData?.id) {
-        const res = await fetch(`/api/dependent?id=${initialData.id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
+      console.log('🚀 Enviando datos al endpoint REAL:', formData);
+
+      const res = await fetch('/api/dependent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      
+      console.log('📡 Status de respuesta:', res.status);
+      
+      const data = await res.json();
+      console.log('📦 Respuesta del servidor:', data);
+      
+      if (data.success) {
+        setLoginInfo(data.loginInfo);
+        setShowLoginInfo(true);
+        
+        // Limpiar formulario
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          relationship: '',
+          documentId: '',
+          birthDate: '',
+          country: '',
         });
-        const data = await res.json();
-        if (data.success) {
-          alert(t('dependentUpdatedToastTitle'));
-          window.location.href = '/dashboard/manage-dependents';
-        } else {
-          alert(data.error || 'Error');
-        }
       } else {
-        const res = await fetch('/api/dependent', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
-        });
-        const data = await res.json();
-        if (data.success) {
-          // Mostrar información de login del dependiente
-          setLoginInfo(data.loginInfo);
-          setShowLoginInfo(true);
-        } else {
-          alert(data.error || 'Error');
-        }
+        alert(data.error || 'Error al crear dependiente');
       }
-    } catch (err) {
-      console.error('Error:', err);
-      alert('Error');
+    } catch (err: any) {
+      console.error('❌ Error:', err);
+      alert('Error de conexión: ' + err.message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <>
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-sky-100 via-indigo-50 to-purple-100">
-        <div className="w-full max-w-2xl mx-auto">
-          <BackToDashboardButton />
-          <Card className="shadow-xl border-slate-200 bg-white rounded-xl">
-            <CardHeader className="bg-slate-50 p-5 sm:p-6 rounded-t-xl">
-              <CardTitle className="text-xl sm:text-2xl text-blue-800 flex items-center">
-                <UserPlus className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6" />
-                {t('dependentData')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-5 sm:p-6 md:p-8">
-              <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
-                <div className="grid sm:grid-cols-2 gap-5 sm:gap-6">
-                  <div className="space-y-1.5">
-                    <Label htmlFor="firstName" className="text-slate-700 font-medium flex items-center text-sm sm:text-base"><User className="w-4 h-4 mr-2 text-slate-400"/>{t('firstNameLabel')}</Label>
-                    <Input id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} required className="h-10 sm:h-11 text-sm sm:text-base"/>
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="lastName" className="text-slate-700 font-medium flex items-center text-sm sm:text-base"><User className="w-4 h-4 mr-2 text-slate-400"/>{t('lastNameLabel')}</Label>
-                    <Input id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} required className="h-10 sm:h-11 text-sm sm:text-base"/>
-                  </div>
+    <div className="min-h-screen flex items-center justify-center p-4" style={{background: 'linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%)'}}>
+      <div className="w-full max-w-2xl mx-auto">
+        <Link href="/dashboard">
+          <button className="mb-4 px-4 py-2 bg-white border border-gray-300 rounded hover:bg-gray-50">
+            ← Volver al Dashboard
+          </button>
+        </Link>
+        
+        <div className="bg-white p-8 rounded-xl shadow-lg">
+          <div className="bg-gray-50 p-6 rounded-t-xl mb-6">
+            <h1 className="text-2xl font-bold text-blue-800 flex items-center">
+              ✨ Crear Dependiente Real
+            </h1>
+          </div>
+
+          <div className="bg-green-100 p-4 rounded-lg mb-6 border border-green-300">
+            <p className="text-green-800 font-medium">
+              ✨ <strong>MODO REAL ACTIVADO</strong> - Guardando en Supabase
+            </p>
+          </div>
+          
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  👤 Nombre *
+                </label>
+                <input 
+                  type="text"
+                  name="firstName" 
+                  value={formData.firstName} 
+                  onChange={handleChange} 
+                  required 
+                  className="w-full h-11 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  👤 Apellido *
+                </label>
+                <input 
+                  type="text"
+                  name="lastName" 
+                  value={formData.lastName} 
+                  onChange={handleChange} 
+                  required 
+                  className="w-full h-11 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+
+            {/* CAMPO DE EMAIL MUY VISIBLE */}
+            <div className="bg-yellow-50 p-4 rounded-lg border-2 border-yellow-300">
+              <label className="block text-lg font-bold text-gray-700 mb-2 flex items-center">
+                📧 EMAIL DEL DEPENDIENTE *
+              </label>
+              <input 
+                type="email"
+                name="email" 
+                value={formData.email} 
+                onChange={handleChange} 
+                required 
+                placeholder="dependiente@ejemplo.com"
+                className="w-full h-12 px-3 text-lg border-2 border-yellow-400 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              />
+              <p className="text-sm text-yellow-700 mt-2 font-medium">
+                💡 El dependiente usará este email para login y recuperar contraseña
+              </p>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                👥 Relación *
+              </label>
+              <select 
+                name="relationship" 
+                value={formData.relationship} 
+                onChange={handleChange} 
+                required
+                className="w-full h-11 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Seleccionar relación</option>
+                {relationships.map(rel => (
+                  <option key={rel} value={rel}>{rel}</option>
+                ))}
+              </select>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  🌍 País *
+                </label>
+                <select 
+                  name="country" 
+                  value={formData.country} 
+                  onChange={handleChange} 
+                  required
+                  className="w-full h-11 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Seleccionar país</option>
+                  {countries.map(country => (
+                    <option key={country} value={country}>{country}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  🆔 Documento *
+                </label>
+                <input 
+                  type="text"
+                  name="documentId" 
+                  value={formData.documentId} 
+                  onChange={handleChange} 
+                  required 
+                  className="w-full h-11 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                📅 Fecha de nacimiento *
+              </label>
+              <input 
+                type="date"
+                name="birthDate" 
+                value={formData.birthDate} 
+                onChange={handleChange} 
+                required 
+                className="w-full h-11 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            
+            {showLoginInfo && loginInfo && (
+              <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-center">
+                <p className="text-green-800 font-semibold text-sm">✅ ¡Dependiente creado en Supabase!</p>
+                <p className="text-green-700 text-xs mt-1">
+                  📧 Email: <span className="font-bold">{loginInfo.email}</span>
+                </p>
+                <p className="text-green-700 text-xs">
+                  🔑 Contraseña temporal: <span className="font-bold">{loginInfo.tempPassword}</span>
+                </p>
+                <p className="text-green-700 text-xs mt-2">
+                  💡 Revisa Supabase Auth y la tabla de dependientes
+                </p>
+                <div className="mt-3">
+                  <Link href="/dashboard/manage-dependents">
+                    <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+                      Ver lista de dependientes
+                    </button>
+                  </Link>
                 </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="relationship" className="text-slate-700 font-medium flex items-center text-sm sm:text-base"><RelationshipIcon className="w-4 h-4 mr-2 text-slate-400"/>{t('relationshipLabel')}</Label>
-                  <Select name="relationship" onValueChange={(value) => handleSelectChange('relationship', value)} value={formData.relationship}>
-                    <SelectTrigger className="w-full h-10 sm:h-11 text-sm sm:text-base"><SelectValue placeholder={t('selectRelationshipPlaceholder')} /></SelectTrigger>
-                    <SelectContent className="max-h-60">
-                      {relationships.map(rel => (
-                        <SelectItem key={rel} value={rel} className="text-sm sm:text-base">{rel}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="grid sm:grid-cols-2 gap-5 sm:gap-6">
-                  <div className="space-y-1.5">
-                    <Label htmlFor="country" className="text-slate-700 font-medium flex items-center text-sm sm:text-base"><Globe className="w-4 h-4 mr-2 text-slate-400"/>{t('countryLabel')}</Label>
-                    <Select name="country" onValueChange={(value) => handleSelectChange('country', value)} value={formData.country}>
-                      <SelectTrigger className="w-full h-10 sm:h-11 text-sm sm:text-base"><SelectValue placeholder={t('countryPlaceholder')} /></SelectTrigger>
-                      <SelectContent className="max-h-60">
-                        {countries.map((country) => (
-                          <SelectItem key={country.code} value={country.name} className="text-sm sm:text-base">{country.name}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="documentId" className="text-slate-700 font-medium flex items-center text-sm sm:text-base"><CreditCard className="w-4 h-4 mr-2 text-slate-400"/>{t('documentIdLabel')}</Label>
-                    <Input id="documentId" name="documentId" value={formData.documentId} onChange={handleChange} required className="h-10 sm:h-11 text-sm sm:text-base"/>
-                  </div>
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="birthDate" className="text-slate-700 font-medium flex items-center text-sm sm:text-base"><Calendar className="w-4 h-4 mr-2 text-slate-400"/>{t('birthDateLabel')}</Label>
-                  <Input id="birthDate" name="birthDate" type="date" value={formData.birthDate} onChange={handleChange} required className="h-10 sm:h-11 text-sm sm:text-base"/>
-                </div>
-                {showLoginInfo && loginInfo && (
-                  <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-center">
-                    <Key className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                    <p className="text-green-800 font-semibold text-sm">{t('dependentAccountCreated')}</p>
-                    <p className="text-green-700 text-xs">{t('dependentLoginInfo')}</p>
-                    <p className="text-green-700 text-xs mt-1">
-                      {t('loginIdentifierLabel')}: <span className="font-bold">{loginInfo.documentId}</span> {t('orEmail')}: <span className="font-bold">{loginInfo.email}</span>
-                    </p>
-                    <p className="text-green-700 text-xs">
-                      {t('temporaryPasswordLabel')}: <span className="font-bold">{loginInfo.tempPassword}</span>
-                    </p>
-                    <div className="mt-3">
-                      <Link href="/dashboard/manage-dependents">
-                        <Button className="bg-green-600 hover:bg-green-700">
-                          {t('goToDependentsList')}
-                        </Button>
-                      </Link>
-                    </div>
-                  </div>
-                )}
-                {!showLoginInfo && (
-                  <Button type="submit" className="w-full bg-blue-700 hover:bg-blue-800 text-white py-2.5 sm:py-3 text-sm sm:text-base h-10 sm:h-11" disabled={loading}>
-                    {loading ? t('adding') : (<><UserPlus className="mr-2 h-4 w-4" /> {mode === 'edit' ? t('saveChanges') : t('saveDependent')}</>)}
-                  </Button>
-                )}
-              </form>
-              {showLoginInfo && (
-                <div className="mt-4 text-center text-xs text-slate-600">
-                  <p>{t('dependentLoginInfo')}</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+              </div>
+            )}
+            
+            {!showLoginInfo && (
+              <button 
+                type="submit" 
+                disabled={loading}
+                className="w-full bg-blue-700 hover:bg-blue-800 text-white py-3 text-lg rounded-md disabled:opacity-50"
+              >
+                {loading ? '⏳ Creando en Supabase...' : '✨ CREAR DEPENDIENTE REAL'}
+              </button>
+            )}
+          </form>
         </div>
       </div>
-    </>
+    </div>
   );
 }

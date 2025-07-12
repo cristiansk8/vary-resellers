@@ -55,18 +55,19 @@ model Vaccine {
 }
 
 model Dependent {
-  id           String   @id @default(uuid()) @db.Uuid
-  firstName    String
-  lastName     String
-  relationship String
-  documentId   String   @unique
-  country      String
-  birthDate    DateTime
-  mainAccountId String  @db.Uuid
-  mainAccount  Profile  @relation("ProfileDependents", fields: [mainAccountId], references: [id])
-  vaccines     Vaccine[] @relation("DependentVaccines")
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id            String   @id @default(uuid()) @db.Uuid
+  firstName     String
+  lastName      String
+  email         String   @unique
+  relationship  String
+  documentId    String   @unique
+  country       String
+  birthDate     DateTime
+  mainAccountId String   @db.Uuid
+  mainAccount   Profile  @relation("ProfileDependents", fields: [mainAccountId], references: [id])
+  vaccines      Vaccine[] @relation("DependentVaccines")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@schema("public")
 }
